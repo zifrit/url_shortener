@@ -1,0 +1,7 @@
+[project]
+name = "url-shortener"
+version = "0.1.0"
+description = "User Shortener"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
