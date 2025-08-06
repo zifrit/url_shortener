@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import FastAPI, Request, HTTPException, status, Depends
 from fastapi.responses import RedirectResponse
-from schemas.short_url import ShortUrl
+from schemas import ShortUrl, Films
 
 SHORT_URL = [
     ShortUrl(
@@ -15,6 +15,27 @@ SHORT_URL = [
     ),
 ]
 
+
+FILMS = [
+    Films(
+        film_id=1,
+        name="Avatar",
+        description="First amazing film",
+        author="James Francis Cameron",
+    ),
+    Films(
+        film_id=2,
+        name="Avatar2",
+        description="Second amazing film",
+        author="James Francis Cameron",
+    ),
+    Films(
+        film_id=3,
+        name="Avatar2",
+        description="Third amazing film",
+        author="James Francis Cameron",
+    ),
+]
 app = FastAPI(
     title="Url Shortener",
 )
@@ -32,6 +53,19 @@ def prefetch_slug_url(
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f'"{slug}" Not found.',
+    )
+
+
+def prefetch_film(
+    film_id: int,
+) -> Films:
+
+    film = [film for film in FILMS if film.film_id == film_id]
+    if film:
+        return film[0]
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"Film with {film_id} not found.",
     )
 
 
@@ -76,3 +110,13 @@ def info_short_urls(
     ],
 ):
     return url
+
+
+@app.get("/films/", response_model=list[Films])
+def read_film_list() -> list[Films]:
+    return FILMS
+
+
+@app.get("/films/{film_id}/", response_model=Films)
+def read_film_list(film: Annotated[Films, Depends(prefetch_film)]) -> Films:
+    return film
