@@ -15,7 +15,7 @@ def read_film_list() -> list[Films]:
     return FILMS
 
 
-@router.get("/{film_id}/", response_model=Films)
+@router.get("/{slug}/", response_model=Films)
 def read_film_list(film: Annotated[Films, Depends(prefetch_film)]) -> Films:
     return film
 
@@ -23,6 +23,5 @@ def read_film_list(film: Annotated[Films, Depends(prefetch_film)]) -> Films:
 @router.post("/", response_model=Films, status_code=status.HTTP_201_CREATED)
 def create_film(film: FilmsCreate):
     return Films(
-        film_id=random.randint(1, 100),
         **film.model_dump(),
     )

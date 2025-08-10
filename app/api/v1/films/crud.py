@@ -2,20 +2,20 @@ from schemas import Films
 
 FILMS = [
     Films(
-        film_id=1,
+        slug="avatar",
         name="Avatar",
         description="First amazing film",
         author="James Francis Cameron",
     ),
     Films(
-        film_id=2,
+        slug="avatar_2",
         name="Avatar2",
         description="Second amazing film",
         author="James Francis Cameron",
     ),
     Films(
-        film_id=3,
-        name="Avatar2",
+        slug="avatar_3",
+        name="Avatar3",
         description="Third amazing film",
         author="James Francis Cameron",
     ),

@@ -6,13 +6,13 @@ from schemas import Films
 
 
 def prefetch_film(
-    film_id: int,
+    slug: str,
 ) -> Films:
 
-    film = [film for film in FILMS if film.film_id == film_id]
+    film = [film for film in FILMS if film.slug == slug]
     if film:
         return film[0]
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Film with {film_id} not found.",
+        detail=f"Film with {slug} not found.",
     )
