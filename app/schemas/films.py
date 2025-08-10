@@ -5,19 +5,21 @@ from pydantic import BaseModel
 
 
 class FilmsBase(BaseModel):
-    film_id: int
+    slug: str
     name: str
     description: str
     author: str | None
 
 
-class FilmsCreate(BaseModel):
+class FilmsCreate(FilmsBase):
+    """
+    create films model
+    """
+
     name: Annotated[
         str,
         Len(min_length=1, max_length=10),
     ]
-    description: str
-    author: str | None
 
 
 class Films(FilmsBase):
