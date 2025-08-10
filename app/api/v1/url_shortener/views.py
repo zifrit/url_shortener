@@ -1,6 +1,6 @@
 from typing import Annotated
 from fastapi import APIRouter, Request, Depends, status, Body
-from api.v1.url_shortener.crud import SHORT_URL
+from api.v1.url_shortener.crud import storage
 from schemas import ShortUrl, ShortUrlCreate
 from services.dependencies.url_shortener import prefetch_slug_url
 
@@ -9,7 +9,7 @@ router = APIRouter(prefix="/short-urls")
 
 @router.get("/", response_model=list[ShortUrl])
 def read_short_url_list(request: Request) -> list[ShortUrl]:
-    return SHORT_URL
+    return storage.get()
 
 
 @router.get(
@@ -21,7 +21,7 @@ def info_short_urls(
         ShortUrl,
         Depends(prefetch_slug_url),
     ],
-):
+) -> ShortUrl:
     return url
 
 
@@ -33,4 +33,4 @@ def info_short_urls(
 def create_short_url(
     short_url_create: Annotated[ShortUrlCreate, Body()],
 ) -> ShortUrl:
-    return ShortUrl(**short_url_create.model_dump())
+    return storage.create(short_url_create)
