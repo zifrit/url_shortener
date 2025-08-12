@@ -23,3 +23,29 @@ def read_film_list(film: Annotated[Films, Depends(prefetch_film)]) -> Films:
 @router.post("/", response_model=Films, status_code=status.HTTP_201_CREATED)
 def create_film(film: FilmsCreate):
     return fim_storage.create(film)
+
+
+@router.delete(
+    "/{slug}/",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        # status.HTTP_204_NO_CONTENT: None,
+        status.HTTP_404_NOT_FOUND: {
+            "description": "Film not found",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "Film 'slug' not found",
+                    },
+                },
+            },
+        },
+    },
+)
+def delete_film(
+    film: Annotated[
+        Films,
+        Depends(prefetch_film),
+    ],
+) -> None:
+    fim_storage.delete(film)
