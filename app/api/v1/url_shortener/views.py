@@ -34,3 +34,29 @@ def create_short_url(
     short_url_create: Annotated[ShortUrlCreate, Body()],
 ) -> ShortUrl:
     return storage.create(short_url_create)
+
+
+@router.delete(
+    "/{slug}/",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        # status.HTTP_204_NO_CONTENT: None,
+        status.HTTP_404_NOT_FOUND: {
+            "description": "Short URL not found",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "detail": "URL 'slug' not found",
+                    },
+                },
+            },
+        },
+    },
+)
+def delete_short_url(
+    url: Annotated[
+        ShortUrl,
+        Depends(prefetch_slug_url),
+    ],
+) -> None:
+    storage.delete(url)
