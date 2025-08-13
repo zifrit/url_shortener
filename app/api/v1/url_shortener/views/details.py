@@ -52,7 +52,7 @@ def delete_short_url(
 
 @router.put(
     "/",
-    status_code=status.HTTP_204_NO_CONTENT,
+    status_code=status.HTTP_200_OK,
 )
 def update_short_url_details(
     url: ShortUrlBySlug,

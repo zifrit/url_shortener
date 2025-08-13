@@ -1,2 +1,2 @@
-from .films import Films, FilmsCreate
+from .films import Films, FilmsCreate, FilmsUpdate
 from .short_url import ShortUrl, ShortUrlCreate, ShortUrlUpdate
