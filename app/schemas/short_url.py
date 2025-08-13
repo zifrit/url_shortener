@@ -5,7 +5,10 @@ from pydantic import BaseModel, HttpUrl
 
 class ShortUrlBase(BaseModel):
     taget_url: HttpUrl
-    slug: str
+    description: Annotated[
+        str,
+        Len(max_length=200),
+    ] = ""
 
 
 class ShortUrlCreate(ShortUrlBase):
@@ -19,7 +22,20 @@ class ShortUrlCreate(ShortUrlBase):
     ]
 
 
+class ShortUrlUpdate(ShortUrlBase):
+    """
+    ShortUrlUpdate model for update short url
+    """
+
+    description: Annotated[
+        str,
+        Len(max_length=200),
+    ]
+
+
 class ShortUrl(ShortUrlBase):
     """
     ShortUrl model
     """
+
+    slug: str
