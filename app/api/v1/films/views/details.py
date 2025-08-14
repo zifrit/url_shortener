@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from starlette import status
 
 from api.v1.films.crud import fim_storage
-from schemas import Films, FilmsUpdate
+from schemas import Films, FilmsUpdate, FilmsParticularUpdate
 from services.dependencies.films import prefetch_film
 
 router = APIRouter(
@@ -54,5 +54,16 @@ def update_film_details(
     film: FilmBySlug,
     film_in: FilmsUpdate,
 ) -> Films:
-    updated_film = fim_storage.update(film=film, film_in=film_in)
-    return updated_film
+    return fim_storage.update(film=film, film_in=film_in)
+
+
+@router.patch(
+    "/",
+    status_code=status.HTTP_200_OK,
+    response_model=Films,
+)
+def update_film_details(
+    film: FilmBySlug,
+    film_in: FilmsParticularUpdate,
+) -> Films:
+    return fim_storage.particular_update(film=film, film_in=film_in)

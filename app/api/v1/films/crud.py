@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from schemas import Films, FilmsCreate, FilmsUpdate
+from schemas import Films, FilmsCreate, FilmsUpdate, FilmsParticularUpdate
 
 
 class FilmStorage(BaseModel):
@@ -24,6 +24,11 @@ class FilmStorage(BaseModel):
 
     def update(self, film: Films, film_in: FilmsUpdate) -> Films:
         for key, value in film_in:
+            setattr(film, key, value)
+        return film
+
+    def particular_update(self, film: Films, film_in: FilmsParticularUpdate) -> Films:
+        for key, value in film_in.model_dump(exclude_unset=True).items():
             setattr(film, key, value)
         return film
 

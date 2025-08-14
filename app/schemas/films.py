@@ -3,13 +3,12 @@ from annotated_types import Len
 
 from pydantic import BaseModel
 
+DescriptionString = Annotated[str, Len(max_length=200)]
+
 
 class FilmsBase(BaseModel):
     name: str
-    description: Annotated[
-        str,
-        Len(max_length=200),
-    ] = ""
+    description: DescriptionString = ""
     author: str | None
 
 
@@ -30,10 +29,17 @@ class FilmsUpdate(FilmsBase):
     FilmsUpdate model for update film
     """
 
-    description: Annotated[
-        str,
-        Len(max_length=200),
-    ]
+    description: DescriptionString
+
+
+class FilmsParticularUpdate(FilmsBase):
+    """
+    FilmsParticularUpdate model for particular update film
+    """
+
+    name: str | None = None
+    author: str | None = None
+    description: DescriptionString | None = None
 
 
 class Films(FilmsBase):
