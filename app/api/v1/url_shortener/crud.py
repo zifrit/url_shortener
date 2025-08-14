@@ -1,5 +1,5 @@
 from pydantic import BaseModel, HttpUrl
-from schemas import ShortUrl, ShortUrlCreate, ShortUrlUpdate
+from schemas import ShortUrl, ShortUrlCreate, ShortUrlUpdate, ShortUrlParticularUpdate
 
 
 class ShortUrlStorage(BaseModel):
@@ -24,6 +24,13 @@ class ShortUrlStorage(BaseModel):
 
     def update(self, short_url: ShortUrl, short_url_in: ShortUrlUpdate) -> ShortUrl:
         for key, value in short_url_in:
+            setattr(short_url, key, value)
+        return short_url
+
+    def particular_update(
+        self, short_url: ShortUrl, short_url_in: ShortUrlParticularUpdate
+    ) -> ShortUrl:
+        for key, value in short_url_in.model_dump(exclude_unset=True).items():
             setattr(short_url, key, value)
         return short_url
 
