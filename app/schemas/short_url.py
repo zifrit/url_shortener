@@ -39,6 +39,14 @@ class ShortUrlParticularUpdate(ShortUrlBase):
     description: DescriptionString | None = None
 
 
+class ShortUrlRead(ShortUrlBase):
+    """
+    ShortUrlRead model
+    """
+
+    slug: str
+
+
 class ShortUrl(ShortUrlBase):
     """
     ShortUrl model

@@ -4,4 +4,5 @@ from .short_url import (
     ShortUrlCreate,
     ShortUrlUpdate,
     ShortUrlParticularUpdate,
+    ShortUrlRead,
 )

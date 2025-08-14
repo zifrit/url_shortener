@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from starlette import status
 
 from api.v1.url_shortener.crud import storage
-from schemas import ShortUrl, ShortUrlUpdate, ShortUrlParticularUpdate
+from schemas import ShortUrl, ShortUrlUpdate, ShortUrlParticularUpdate, ShortUrlRead
 from services.dependencies.url_shortener import prefetch_slug_url
 
 router = APIRouter(
@@ -32,7 +32,7 @@ ShortUrlBySlug = Annotated[
 
 @router.get(
     "/",
-    response_model=ShortUrl,
+    response_model=ShortUrlRead,
 )
 def info_short_urls(
     url: ShortUrlBySlug,
@@ -50,7 +50,7 @@ def delete_short_url(
     storage.delete(url)
 
 
-@router.put("/", status_code=status.HTTP_200_OK, response_model=ShortUrl)
+@router.put("/", status_code=status.HTTP_200_OK, response_model=ShortUrlRead)
 def update_short_url_details(
     url: ShortUrlBySlug,
     short_url_in: ShortUrlUpdate,
@@ -58,7 +58,7 @@ def update_short_url_details(
     return storage.update(short_url=url, short_url_in=short_url_in)
 
 
-@router.patch("/", status_code=status.HTTP_200_OK, response_model=ShortUrl)
+@router.patch("/", status_code=status.HTTP_200_OK, response_model=ShortUrlRead)
 def particular_update_short_url_details(
     url: ShortUrlBySlug,
     short_url_in: ShortUrlParticularUpdate,
