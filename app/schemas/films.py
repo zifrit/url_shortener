@@ -42,6 +42,14 @@ class FilmsParticularUpdate(FilmsBase):
     description: DescriptionString | None = None
 
 
+class FilmsRead(FilmsBase):
+    """
+    FilmsRead model
+    """
+
+    slug: str
+
+
 class Films(FilmsBase):
     """
     Films model

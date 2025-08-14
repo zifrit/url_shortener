@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from starlette import status
 
 from api.v1.films.crud import fim_storage
-from schemas import Films, FilmsUpdate, FilmsParticularUpdate
+from schemas import Films, FilmsUpdate, FilmsParticularUpdate, FilmsRead
 from services.dependencies.films import prefetch_film
 
 router = APIRouter(
@@ -30,7 +30,7 @@ FilmBySlug = Annotated[
 ]
 
 
-@router.get("/", response_model=Films)
+@router.get("/", response_model=FilmsRead)
 def read_film_by_slug(film: Annotated[Films, Depends(prefetch_film)]) -> Films:
     return film
 
@@ -48,7 +48,7 @@ def delete_film(
 @router.put(
     "/",
     status_code=status.HTTP_200_OK,
-    response_model=Films,
+    response_model=FilmsRead,
 )
 def update_film_details(
     film: FilmBySlug,
@@ -60,7 +60,7 @@ def update_film_details(
 @router.patch(
     "/",
     status_code=status.HTTP_200_OK,
-    response_model=Films,
+    response_model=FilmsRead,
 )
 def update_film_details(
     film: FilmBySlug,
