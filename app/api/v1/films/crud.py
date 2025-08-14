@@ -3,24 +3,24 @@ from schemas import Films, FilmsCreate, FilmsUpdate, FilmsParticularUpdate
 
 
 class FilmStorage(BaseModel):
-    slug_to_film: dict[str, Films] = {}
+    slug_to_item: dict[str, Films] = {}
 
     def get(self) -> list[Films]:
-        return list(self.slug_to_film.values())
+        return list(self.slug_to_item.values())
 
     def get_by_slug(self, slug: str) -> Films | None:
-        return self.slug_to_film.get(slug)
+        return self.slug_to_item.get(slug)
 
     def create(self, data: FilmsCreate) -> Films:
         new_film = Films(**data.model_dump())
-        self.slug_to_film[new_film.slug] = new_film
+        self.slug_to_item[new_film.slug] = new_film
         return new_film
 
     def delete_by_slug(self, slug: str) -> None:
-        self.slug_to_film.pop(slug, None)
+        self.slug_to_item.pop(slug, None)
 
     def delete(self, film: Films) -> None:
-        self.slug_to_film.pop(film.slug, None)
+        self.slug_to_item.pop(film.slug, None)
 
     def update(self, film: Films, film_in: FilmsUpdate) -> Films:
         for key, value in film_in:
@@ -34,28 +34,3 @@ class FilmStorage(BaseModel):
 
 
 fim_storage = FilmStorage()
-
-fim_storage.create(
-    FilmsCreate(
-        slug="avatar",
-        name="Avatar",
-        description="First amazing film",
-        author="James Francis Cameron",
-    ),
-)
-fim_storage.create(
-    FilmsCreate(
-        slug="avatar_2",
-        name="Avatar2",
-        description="Second amazing film",
-        author="James Francis Cameron",
-    ),
-)
-fim_storage.create(
-    FilmsCreate(
-        slug="avatar_3",
-        name="Avatar3",
-        description="Third amazing film",
-        author="James Francis Cameron",
-    ),
-)
