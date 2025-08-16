@@ -10,16 +10,17 @@ from services.utils.load_dopm_data import (
     load_data_from_json_file,
     dump_data_from_json_file,
 )
+from core import FILM_DIR, SHORT_URL_DIR
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     try:
-        load_data_from_json_file("film_slugs.json", FilmsCreate, fim_storage)
-        load_data_from_json_file("short_url_slugs.json", ShortUrlCreate, storage)
+        load_data_from_json_file(FILM_DIR, FilmsCreate, fim_storage)
+        load_data_from_json_file(SHORT_URL_DIR, ShortUrlCreate, storage)
         yield
-        dump_data_from_json_file("short_url_slugs.json", storage)
-        dump_data_from_json_file("film_slugs.json", fim_storage)
+        dump_data_from_json_file(SHORT_URL_DIR, storage)
+        dump_data_from_json_file(FILM_DIR, fim_storage)
     finally:
         pass
 
