@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from starlette import status
 
-from api.v1.films.crud import fim_storage
+from api.v1.films.crud import film_storage
 from schemas import Films, FilmsUpdate, FilmsParticularUpdate, FilmsRead
 from services.dependencies.films import prefetch_film
 
@@ -42,7 +42,7 @@ def read_film_by_slug(film: Annotated[Films, Depends(prefetch_film)]) -> Films:
 def delete_film(
     film: FilmBySlug,
 ) -> None:
-    fim_storage.delete(film)
+    film_storage.delete(film)
 
 
 @router.put(
@@ -54,7 +54,7 @@ def update_film_details(
     film: FilmBySlug,
     film_in: FilmsUpdate,
 ) -> Films:
-    return fim_storage.update(film=film, film_in=film_in)
+    return film_storage.update(film=film, film_in=film_in)
 
 
 @router.patch(
@@ -66,4 +66,4 @@ def update_film_details(
     film: FilmBySlug,
     film_in: FilmsParticularUpdate,
 ) -> Films:
-    return fim_storage.particular_update(film=film, film_in=film_in)
+    return film_storage.particular_update(film=film, film_in=film_in)
