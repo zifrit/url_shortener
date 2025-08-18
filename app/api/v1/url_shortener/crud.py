@@ -22,6 +22,16 @@ class ShortUrlStorage(BaseModel):
             return ShortUrlStorage()
         return cls.model_validate_json(SHORT_URL_DIR.read_text())
 
+    def init_storage_from_state(self):
+        try:
+            data = ShortUrlStorage.load()
+        except ValidationError:
+            self.save()
+            log.warning("Rewritten short url storage file")
+        storage.slug_to_item.update(data.slug_to_item)
+        self.save()
+        log.warning("Recovered data from storage file")
+
     def get(self) -> list[ShortUrl]:
         return list(self.slug_to_item.values())
 
@@ -56,22 +66,4 @@ class ShortUrlStorage(BaseModel):
         return short_url
 
 
-try:
-    storage = ShortUrlStorage.load()
-    log.warning("Recovered data from storage file")
-except ValidationError:
-    storage = ShortUrlStorage()
-    log.warning("Rewritten short url storage file")
-    storage.create(
-        ShortUrlCreate(
-            taget_url=HttpUrl("https://www.google.com"),
-            slug="google",
-        ),
-    )
-    storage.create(
-        ShortUrlCreate(
-            taget_url=HttpUrl("https://www.example.com"),
-            slug="search",
-        ),
-    )
-    storage.save()
+storage = ShortUrlStorage()

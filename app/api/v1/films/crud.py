@@ -22,6 +22,16 @@ class FilmStorage(BaseModel):
             return FilmStorage()
         return cls.model_validate_json(FILM_DIR.read_text())
 
+    def init_storage_from_state(self):
+        try:
+            data = FilmStorage.load()
+        except ValidationError:
+            self.save()
+            log.warning("Rewritten films storage file")
+        film_storage.slug_to_item.update(data.slug_to_item)
+        self.save()
+        log.warning("Recovered data from films file")
+
     def get(self) -> list[Films]:
         return list(self.slug_to_item.values())
 
@@ -54,34 +64,4 @@ class FilmStorage(BaseModel):
         return film
 
 
-try:
-    film_storage = FilmStorage.load()
-    log.warning("Recovered data from films file")
-except ValidationError:
-    film_storage = FilmStorage()
-    log.warning("Rewritten films storage file")
-    film_storage.create(
-        FilmsCreate(
-            slug="avatar",
-            name="Avatar",
-            description="First amazing film",
-            author="James Francis Cameron",
-        ),
-    )
-    film_storage.create(
-        FilmsCreate(
-            slug="avatar_2",
-            name="Avatar2",
-            description="Second amazing film",
-            author="James Francis Cameron",
-        ),
-    )
-    film_storage.create(
-        FilmsCreate(
-            slug="avatar_3",
-            name="Avatar3",
-            description="Third amazing film",
-            author="James Francis Cameron",
-        ),
-    )
-    film_storage.save()
+film_storage = FilmStorage()
