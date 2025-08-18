@@ -1,7 +1,11 @@
+import logging
+
 from pydantic import BaseModel, ValidationError, HttpUrl
 
 from core import SHORT_URL_DIR
 from schemas import ShortUrl, ShortUrlCreate, ShortUrlUpdate, ShortUrlParticularUpdate
+
+log = logging.getLogger(__name__)
 
 
 class ShortUrlStorage(BaseModel):
@@ -9,10 +13,12 @@ class ShortUrlStorage(BaseModel):
 
     def save(self) -> None:
         SHORT_URL_DIR.write_text(self.model_dump_json(indent=2))
+        log.info("Saved short url to storage file")
 
     @classmethod
     def load(cls) -> "ShortUrlStorage":
         if not SHORT_URL_DIR.exists():
+            log.info("Short url directory does not exist")
             return ShortUrlStorage()
         return cls.model_validate_json(SHORT_URL_DIR.read_text())
 
@@ -52,8 +58,10 @@ class ShortUrlStorage(BaseModel):
 
 try:
     storage = ShortUrlStorage.load()
+    log.warning("Recovered data from storage file")
 except ValidationError:
     storage = ShortUrlStorage()
+    log.warning("Rewritten short url storage file")
     storage.create(
         ShortUrlCreate(
             taget_url=HttpUrl("https://www.google.com"),
@@ -66,3 +74,4 @@ except ValidationError:
             slug="search",
         ),
     )
+    storage.save()
