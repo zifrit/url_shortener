@@ -1,7 +1,11 @@
+import logging
+
 from pydantic import BaseModel, ValidationError
 
 from core import FILM_DIR
 from schemas import Films, FilmsCreate, FilmsUpdate, FilmsParticularUpdate
+
+log = logging.getLogger(__name__)
 
 
 class FilmStorage(BaseModel):
@@ -9,10 +13,12 @@ class FilmStorage(BaseModel):
 
     def save(self):
         FILM_DIR.write_text(self.model_dump_json(indent=2))
+        log.info("Saved films to storage file")
 
     @classmethod
     def load(cls) -> "FilmStorage":
         if not FILM_DIR.exists():
+            log.info("Fils directory does not exist")
             return FilmStorage()
         return cls.model_validate_json(FILM_DIR.read_text())
 
@@ -50,8 +56,10 @@ class FilmStorage(BaseModel):
 
 try:
     film_storage = FilmStorage.load()
+    log.warning("Recovered data from films file")
 except ValidationError:
     film_storage = FilmStorage()
+    log.warning("Rewritten films storage file")
     film_storage.create(
         FilmsCreate(
             slug="avatar",
@@ -76,3 +84,4 @@ except ValidationError:
             author="James Francis Cameron",
         ),
     )
+    film_storage.save()
