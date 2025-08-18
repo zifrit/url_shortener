@@ -2,8 +2,9 @@ import logging
 import uvicorn
 from fastapi import FastAPI, Request
 from api import router as api_router
+from core.config import LOG_FORMAT, LOG_LEVEL
 
-
+logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
 app = FastAPI()
 app.include_router(api_router)
 
