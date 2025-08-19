@@ -12,9 +12,6 @@ class FilmStorage(BaseModel):
     slug_to_item: dict[str, Films] = {}
 
     def save(self):
-        from time import sleep
-
-        sleep(2)
         FILM_DIR.write_text(self.model_dump_json(indent=2))
         log.info("Saved films to storage file")
 

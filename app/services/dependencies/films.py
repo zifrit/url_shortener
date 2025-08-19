@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, BackgroundTasks
 from starlette import status
 
 from api.v1.films.crud import film_storage
@@ -15,3 +15,10 @@ def prefetch_film(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Film with {slug} not found.",
     )
+
+
+def save_film_state(
+    background_task: BackgroundTasks,
+):
+    yield
+    background_task.add_task(film_storage.save)
