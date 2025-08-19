@@ -1,5 +1,4 @@
 import logging
-from time import sleep
 from pydantic import BaseModel, ValidationError
 
 from core import FILM_DIR
