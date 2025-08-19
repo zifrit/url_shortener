@@ -1,0 +1,24 @@
+{
+  "slug_to_item": {
+    "string": {
+      "taget_url": "https://example.com/",
+      "description": "",
+      "slug": "string"
+    },
+    "string2": {
+      "taget_url": "https://example.com/",
+      "description": "",
+      "slug": "string2"
+    },
+    "string3": {
+      "taget_url": "https://example.com/",
+      "description": "",
+      "slug": "string3"
+    },
+    "string4": {
+      "taget_url": "https://example.com/",
+      "description": "",
+      "slug": "string4"
+    }
+  }
+}
