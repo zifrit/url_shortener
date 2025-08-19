@@ -46,9 +46,7 @@ def info_short_urls(
 )
 def delete_short_url(
     url: ShortUrlBySlug,
-    background_task: BackgroundTasks,
 ) -> None:
-    background_task.add_task(storage.save)
     storage.delete(url)
 
 
@@ -56,20 +54,13 @@ def delete_short_url(
 def update_short_url_details(
     url: ShortUrlBySlug,
     short_url_in: ShortUrlUpdate,
-    background_task: BackgroundTasks,
 ) -> ShortUrl:
-    short_url = storage.update(short_url=url, short_url_in=short_url_in)
-    background_task.add_task(storage.save)
-    return short_url
+    return storage.update(short_url=url, short_url_in=short_url_in)
 
 
 @router.patch("/", status_code=status.HTTP_200_OK, response_model=ShortUrlRead)
 def particular_update_short_url_details(
     url: ShortUrlBySlug,
     short_url_in: ShortUrlParticularUpdate,
-    background_task: BackgroundTasks,
 ) -> ShortUrl:
-    background_task.add_task(storage.save)
-    short_url = storage.particular_update(short_url=url, short_url_in=short_url_in)
-    background_task.add_task(storage.save)
-    return short_url
+    return storage.particular_update(short_url=url, short_url_in=short_url_in)
