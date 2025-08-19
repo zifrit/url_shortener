@@ -2,7 +2,7 @@ from fastapi import status
 
 from api.v1.films.crud import film_storage
 from schemas import Films, FilmsCreate, FilmsRead
-from fastapi import APIRouter
+from fastapi import APIRouter, BackgroundTasks
 
 router = APIRouter(prefix="/films")
 
@@ -13,5 +13,10 @@ def read_film_list() -> list[Films]:
 
 
 @router.post("/", response_model=FilmsRead, status_code=status.HTTP_201_CREATED)
-def create_film(film: FilmsCreate):
-    return film_storage.create(film)
+def create_film(
+    film: FilmsCreate,
+    background_task: BackgroundTasks,
+):
+    films = film_storage.create(film)
+    background_task.add_task(film_storage.save)
+    return films

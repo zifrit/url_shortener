@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, BackgroundTasks
 from starlette import status
 
 from api.v1.films.crud import film_storage
@@ -41,8 +41,10 @@ def read_film_by_slug(film: Annotated[Films, Depends(prefetch_film)]) -> Films:
 )
 def delete_film(
     film: FilmBySlug,
+    background_task: BackgroundTasks,
 ) -> None:
     film_storage.delete(film)
+    background_task.add_task(film_storage.save)
 
 
 @router.put(
@@ -53,8 +55,11 @@ def delete_film(
 def update_film_details(
     film: FilmBySlug,
     film_in: FilmsUpdate,
+    background_task: BackgroundTasks,
 ) -> Films:
-    return film_storage.update(film=film, film_in=film_in)
+    films = film_storage.update(film=film, film_in=film_in)
+    background_task.add_task(film_storage.save)
+    return films
 
 
 @router.patch(
@@ -65,5 +70,8 @@ def update_film_details(
 def update_film_details(
     film: FilmBySlug,
     film_in: FilmsParticularUpdate,
+    background_task: BackgroundTasks,
 ) -> Films:
-    return film_storage.particular_update(film=film, film_in=film_in)
+    films = film_storage.particular_update(film=film, film_in=film_in)
+    background_task.add_task(film_storage.save)
+    return films

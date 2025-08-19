@@ -1,5 +1,5 @@
 import logging
-
+from time import sleep
 from pydantic import BaseModel, ValidationError
 
 from core import FILM_DIR
@@ -12,6 +12,9 @@ class FilmStorage(BaseModel):
     slug_to_item: dict[str, Films] = {}
 
     def save(self):
+        from time import sleep
+
+        sleep(2)
         FILM_DIR.write_text(self.model_dump_json(indent=2))
         log.info("Saved films to storage file")
 
@@ -41,11 +44,10 @@ class FilmStorage(BaseModel):
     def create(self, data: FilmsCreate) -> Films:
         new_film = Films(**data.model_dump())
         self.slug_to_item[new_film.slug] = new_film
-        self.save()
+        log.info("Created new film %s", new_film)
         return new_film
 
     def delete_by_slug(self, slug: str) -> None:
-        self.save()
         self.slug_to_item.pop(slug, None)
 
     def delete(self, film: Films) -> None:
@@ -54,13 +56,11 @@ class FilmStorage(BaseModel):
     def update(self, film: Films, film_in: FilmsUpdate) -> Films:
         for key, value in film_in:
             setattr(film, key, value)
-        self.save()
         return film
 
     def particular_update(self, film: Films, film_in: FilmsParticularUpdate) -> Films:
         for key, value in film_in.model_dump(exclude_unset=True).items():
             setattr(film, key, value)
-        self.save()
         return film
 
 
