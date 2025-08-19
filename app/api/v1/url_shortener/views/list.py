@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Request, status, Body
+from fastapi import APIRouter, Request, status, Body, BackgroundTasks
 from api.v1.url_shortener.crud import storage
 from schemas import ShortUrl, ShortUrlCreate, ShortUrlRead
 
@@ -18,5 +18,8 @@ def read_short_url_list(request: Request) -> list[ShortUrl]:
 )
 def create_short_url(
     short_url_create: Annotated[ShortUrlCreate, Body()],
+    background_task: BackgroundTasks,
 ) -> ShortUrl:
-    return storage.create(short_url_create)
+    short_url = storage.create(short_url_create)
+    background_task.add_task(storage.save)
+    return short_url

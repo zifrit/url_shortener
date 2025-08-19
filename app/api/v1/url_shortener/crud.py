@@ -25,12 +25,12 @@ class ShortUrlStorage(BaseModel):
     def init_storage_from_state(self):
         try:
             data = ShortUrlStorage.load()
+            storage.slug_to_item.update(data.slug_to_item)
+            log.warning("Recovered data from storage file")
+            self.save()
         except ValidationError:
             self.save()
             log.warning("Rewritten short url storage file")
-        storage.slug_to_item.update(data.slug_to_item)
-        self.save()
-        log.warning("Recovered data from storage file")
 
     def get(self) -> list[ShortUrl]:
         return list(self.slug_to_item.values())
@@ -41,11 +41,10 @@ class ShortUrlStorage(BaseModel):
     def create(self, data: ShortUrlCreate) -> ShortUrl:
         new_short_url = ShortUrl(**data.model_dump())
         self.slug_to_item[new_short_url.slug] = new_short_url
-        self.save()
+        log.info("Created new short url %s", new_short_url)
         return new_short_url
 
     def delete_by_slug(self, slug: str) -> None:
-        self.save()
         self.slug_to_item.pop(slug, None)
 
     def delete(self, short_url: ShortUrl) -> None:
@@ -54,7 +53,6 @@ class ShortUrlStorage(BaseModel):
     def update(self, short_url: ShortUrl, short_url_in: ShortUrlUpdate) -> ShortUrl:
         for key, value in short_url_in:
             setattr(short_url, key, value)
-        self.save()
         return short_url
 
     def particular_update(
@@ -62,7 +60,6 @@ class ShortUrlStorage(BaseModel):
     ) -> ShortUrl:
         for key, value in short_url_in.model_dump(exclude_unset=True).items():
             setattr(short_url, key, value)
-        self.save()
         return short_url
 
 
