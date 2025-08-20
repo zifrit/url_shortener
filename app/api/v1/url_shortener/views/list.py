@@ -23,6 +23,5 @@ def read_short_url_list(request: Request) -> list[ShortUrl]:
 )
 def create_short_url(
     short_url_create: Annotated[ShortUrlCreate, Body()],
-    _=Depends(api_token_validate),
 ) -> ShortUrl:
     return storage.create(short_url_create)

@@ -5,7 +5,6 @@ from schemas import Films, FilmsCreate, FilmsRead
 from fastapi import APIRouter, BackgroundTasks
 
 from services.dependencies.films import save_film_state
-from services.dependencies.other import api_token_validate
 
 router = APIRouter(
     prefix="/films",
@@ -21,6 +20,5 @@ def read_film_list() -> list[Films]:
 @router.post("/", response_model=FilmsRead, status_code=status.HTTP_201_CREATED)
 def create_film(
     film: FilmsCreate,
-    _=Depends(api_token_validate),
 ):
     return film_storage.create(film)
