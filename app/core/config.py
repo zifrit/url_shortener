@@ -16,3 +16,9 @@ API_TOKENS = frozenset(
         "YVFuyt23pDfI-M7rXjguR9Oi0l4",
     },
 )
+
+USERS = {
+    "bob": "bob",
+    "jim": "jim",
+    "admin": "admin",
+}

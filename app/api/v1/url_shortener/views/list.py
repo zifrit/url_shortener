@@ -2,7 +2,6 @@ from typing import Annotated
 from fastapi import APIRouter, Request, status, Body, BackgroundTasks, Depends
 from api.v1.url_shortener.crud import storage
 from schemas import ShortUrl, ShortUrlCreate, ShortUrlRead
-from services.dependencies.other import api_token_validate
 from services.dependencies.url_shortener import save_short_url_state
 
 router = APIRouter(

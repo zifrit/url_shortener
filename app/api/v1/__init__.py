@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 
-from services.dependencies.other import api_token_validate
+from services.dependencies.other import api_token_validate, username_password_validate
 from .url_shortener.views import router as url_shortener_router
 from .redirect import router as redirect_url_router
 from .films.views import router as films_router
