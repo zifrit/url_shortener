@@ -6,11 +6,11 @@ router = APIRouter(
     responses={
         # status.HTTP_204_NO_CONTENT: None,
         status.HTTP_401_UNAUTHORIZED: {
-            "description": "Invalid token",
+            "description": "Invalid token or incorrect Password or Username",
             "content": {
                 "application/json": {
                     "example": {
-                        "detail": "Invalid token",
+                        "detail": "Invalid token or incorrect Password or Username",
                     },
                 },
             },

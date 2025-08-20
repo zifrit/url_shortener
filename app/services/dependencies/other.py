@@ -20,13 +20,23 @@ security = HTTPBearer(
 )
 
 base_security = HTTPBasic(
-    scheme_name="Static API Token",
-    description="Your static API token from the developer portal",
+    scheme_name="Base auth",
+    description="Your Base auth from the developer portal",
     auto_error=False,
 )
 
 
-def api_token_validate(
+def api_token_validate(token: HTTPAuthorizationCredentials):
+
+    log.info("API token %s", token)
+    if token.credentials not in API_TOKENS:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+        )
+
+
+def api_token_auth(
     request: Request,
     token: Annotated[
         HTTPAuthorizationCredentials | None,
@@ -41,15 +51,22 @@ def api_token_validate(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="API token is required",
         )
-    log.info("API token %s", token)
-    if token.credentials not in API_TOKENS:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid token",
-        )
+    api_token_validate(token)
 
 
-def username_password_validate(
+def username_password_validate(cred: HTTPBasicCredentials | None):
+
+    log.info("Credentials %s", cred)
+    if cred and cred.username in USERS and USERS[cred.username] == cred.password:
+        return
+    raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Username and password are required",
+        headers={"WWW-Authenticate": "Basic"},
+    )
+
+
+def username_password_auth(
     request: Request,
     cred: Annotated[
         HTTPBasicCredentials | None,
@@ -59,11 +76,31 @@ def username_password_validate(
 
     if request.method not in UNSAFE_METHODS:
         return
-    log.info("Credentials %s", cred)
-    if cred and cred.username in USERS and USERS[cred.username] == cred.password:
+
+    username_password_validate(cred)
+
+
+def combine_auth(
+    request: Request,
+    token: Annotated[
+        HTTPAuthorizationCredentials | None,
+        Depends(security),
+    ] = None,
+    cred: Annotated[
+        HTTPBasicCredentials | None,
+        Depends(base_security),
+    ] = None,
+):
+
+    if request.method not in UNSAFE_METHODS:
         return
+
+    if token:
+        return api_token_validate(token)
+    if cred:
+        return username_password_validate(cred)
+
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Username and password are required",
-        headers={"WWW-Authenticate": "Basic"},
+        detail="Api token or base auth are required",
     )
