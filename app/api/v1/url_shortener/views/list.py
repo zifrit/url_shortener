@@ -2,6 +2,7 @@ from typing import Annotated
 from fastapi import APIRouter, Request, status, Body, BackgroundTasks, Depends
 from api.v1.url_shortener.crud import storage
 from schemas import ShortUrl, ShortUrlCreate, ShortUrlRead
+from services.dependencies.other import api_token_validate
 from services.dependencies.url_shortener import save_short_url_state
 
 router = APIRouter(
@@ -22,5 +23,6 @@ def read_short_url_list(request: Request) -> list[ShortUrl]:
 )
 def create_short_url(
     short_url_create: Annotated[ShortUrlCreate, Body()],
+    _=Depends(api_token_validate),
 ) -> ShortUrl:
     return storage.create(short_url_create)

@@ -6,6 +6,7 @@ from starlette import status
 from api.v1.films.crud import film_storage
 from schemas import Films, FilmsUpdate, FilmsParticularUpdate, FilmsRead
 from services.dependencies.films import prefetch_film
+from services.dependencies.other import api_token_validate
 
 router = APIRouter(
     prefix="/{slug}",
@@ -22,6 +23,9 @@ router = APIRouter(
             },
         },
     },
+    dependencies=[
+        Depends(api_token_validate),
+    ],
 )
 
 FilmBySlug = Annotated[

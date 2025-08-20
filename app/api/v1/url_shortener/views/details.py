@@ -5,6 +5,7 @@ from starlette import status
 
 from api.v1.url_shortener.crud import storage
 from schemas import ShortUrl, ShortUrlUpdate, ShortUrlParticularUpdate, ShortUrlRead
+from services.dependencies.other import api_token_validate
 from services.dependencies.url_shortener import prefetch_slug_url
 
 router = APIRouter(
@@ -22,6 +23,7 @@ router = APIRouter(
             },
         },
     },
+    dependencies=[Depends(api_token_validate)],
 )
 
 ShortUrlBySlug = Annotated[
