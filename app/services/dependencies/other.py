@@ -8,9 +8,10 @@ from fastapi.security import (
     HTTPBasic,
     HTTPBasicCredentials,
 )
-from core.config import API_TOKENS, USERS, REDIS_TOKENS_SET_NAME
+from core.config import API_TOKENS, USERS
 from services.dependencies.url_shortener import UNSAFE_METHODS
-from services.frameworks.cache import cache_token_storage
+from api.v1.auth.services.by_token import cache_token_storage
+from api.v1.auth.services.by_username_and_password import cache_user_storage
 
 log = logging.getLogger(__name__)
 
@@ -60,12 +61,12 @@ def api_token_auth(
 def username_password_validate(cred: HTTPBasicCredentials | None):
 
     log.info("Credentials %s", cred)
-    if cred and cred.username in USERS and USERS[cred.username] == cred.password:
+    if cred and cache_user_storage.validate_user_password(cred.username, cred.password):
         return
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Username and password are required",
-        headers={"WWW-Authenticate": "Basic"},
+        detail="Invalid username or password.",
+        # headers={"WWW-Authenticate": "Basic"},
     )
 
 
