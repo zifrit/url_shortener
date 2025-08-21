@@ -2,7 +2,6 @@ import logging
 from redis import Redis
 from pydantic import BaseModel, ValidationError, HttpUrl
 
-from core import SHORT_URL_DIR
 from core import config
 from schemas import ShortUrl, ShortUrlCreate, ShortUrlUpdate, ShortUrlParticularUpdate
 
@@ -20,10 +19,6 @@ redis_storage = Redis(
 class ShortUrlStorage(BaseModel):
     slug_to_item: dict[str, ShortUrl] = {}
 
-    def save(self) -> None:
-        SHORT_URL_DIR.write_text(self.model_dump_json(indent=2))
-        log.info("Saved short url to storage file")
-
     @classmethod
     def save_to_redis_storage(cls, short_url: ShortUrl) -> None:
         redis_storage.hset(
@@ -31,23 +26,6 @@ class ShortUrlStorage(BaseModel):
             key=short_url.slug,
             value=short_url.model_dump_json(),
         )
-
-    @classmethod
-    def load(cls) -> "ShortUrlStorage":
-        if not SHORT_URL_DIR.exists():
-            log.info("Short url directory does not exist")
-            return ShortUrlStorage()
-        return cls.model_validate_json(SHORT_URL_DIR.read_text())
-
-    def init_storage_from_state(self):
-        try:
-            data = ShortUrlStorage.load()
-            storage.slug_to_item.update(data.slug_to_item)
-            log.warning("Recovered data from storage file")
-            self.save()
-        except ValidationError:
-            self.save()
-            log.warning("Rewritten short url storage file")
 
     def get(self) -> list[ShortUrl]:
         datas = redis_storage.hvals(

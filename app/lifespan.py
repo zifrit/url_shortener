@@ -8,6 +8,4 @@ from api.v1.url_shortener.crud import storage
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    storage.init_storage_from_state()
-    film_storage.init_storage_from_state()
     yield

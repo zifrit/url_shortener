@@ -4,11 +4,9 @@ from api.v1.films.crud import film_storage
 from schemas import Films, FilmsCreate, FilmsRead
 from fastapi import APIRouter, BackgroundTasks
 
-from services.dependencies.films import save_film_state
 
 router = APIRouter(
     prefix="/films",
-    dependencies=[Depends(save_film_state)],
 )
 
 

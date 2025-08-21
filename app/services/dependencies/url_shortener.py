@@ -28,13 +28,3 @@ def prefetch_slug_url(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f'"{slug}" Not found.',
     )
-
-
-def save_short_url_state(
-    request: Request,
-    background_task: BackgroundTasks,
-):
-    yield
-    if request.method in UNSAFE_METHODS:
-        log.info("Add background task to save storage")
-        background_task.add_task(storage.save)

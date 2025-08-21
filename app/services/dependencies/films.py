@@ -20,13 +20,3 @@ def prefetch_film(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Film with {slug} not found.",
     )
-
-
-def save_film_state(
-    request: Request,
-    background_task: BackgroundTasks,
-):
-    yield
-    if request.method in UNSAFE_METHODS:
-        log.info("Add background task to save storage")
-        background_task.add_task(film_storage.save)

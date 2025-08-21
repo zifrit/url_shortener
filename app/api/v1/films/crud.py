@@ -2,7 +2,6 @@ import logging
 from redis import Redis
 from pydantic import BaseModel, ValidationError
 
-from core import FILM_DIR
 from core import config
 from schemas import Films, FilmsCreate, FilmsUpdate, FilmsParticularUpdate
 
@@ -20,10 +19,6 @@ redis_storage = Redis(
 class FilmStorage(BaseModel):
     slug_to_item: dict[str, Films] = {}
 
-    def save(self):
-        FILM_DIR.write_text(self.model_dump_json(indent=2))
-        log.info("Saved films to storage file")
-
     @classmethod
     def save_to_redis_storage(cls, film: Films) -> None:
         redis_storage.hset(
@@ -31,23 +26,6 @@ class FilmStorage(BaseModel):
             key=film.slug,
             value=film.model_dump_json(),
         )
-
-    @classmethod
-    def load(cls) -> "FilmStorage":
-        if not FILM_DIR.exists():
-            log.info("Fils directory does not exist")
-            return FilmStorage()
-        return cls.model_validate_json(FILM_DIR.read_text())
-
-    def init_storage_from_state(self):
-        try:
-            data = FilmStorage.load()
-        except ValidationError:
-            self.save()
-            log.warning("Rewritten films storage file")
-        film_storage.slug_to_item.update(data.slug_to_item)
-        self.save()
-        log.warning("Recovered data from films file")
 
     def get(self) -> list[Films]:
         datas = redis_storage.hvals(
