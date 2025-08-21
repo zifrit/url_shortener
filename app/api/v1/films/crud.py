@@ -64,7 +64,7 @@ class FilmStorage(BaseModel):
             key=slug,
         )
 
-    def create_or_raise_if_not_exists(
+    def create_or_raise_if_exists(
         self, film: FilmsCreate
     ) -> Films | AlreadyExistFilmError:
         if not self.exists(film.slug):

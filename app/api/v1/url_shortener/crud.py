@@ -68,7 +68,7 @@ class ShortUrlStorage(BaseModel):
             key=slug,
         )
 
-    def create_or_raise_if_not_exists(
+    def create_or_raise_if_exists(
         self, short_url: ShortUrlCreate
     ) -> ShortUrl | AlreadyExistsShortUrlError:
         if not self.exists(short_url.slug):
