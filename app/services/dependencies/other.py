@@ -8,8 +8,9 @@ from fastapi.security import (
     HTTPBasic,
     HTTPBasicCredentials,
 )
-from core.config import API_TOKENS, USERS
+from core.config import API_TOKENS, USERS, REDIS_TOKENS_SET_NAME
 from services.dependencies.url_shortener import UNSAFE_METHODS
+from services.frameworks.cache import cache_token_storage
 
 log = logging.getLogger(__name__)
 
@@ -29,7 +30,10 @@ base_security = HTTPBasic(
 def api_token_validate(token: HTTPAuthorizationCredentials):
 
     log.info("API token %s", token)
-    if token.credentials not in API_TOKENS:
+    if not cache_token_storage.sismember(
+        REDIS_TOKENS_SET_NAME,
+        token.credentials,
+    ):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token",
