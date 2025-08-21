@@ -30,8 +30,7 @@ base_security = HTTPBasic(
 def api_token_validate(token: HTTPAuthorizationCredentials):
 
     log.info("API token %s", token)
-    if not cache_token_storage.sismember(
-        REDIS_TOKENS_SET_NAME,
+    if not cache_token_storage.token_exists(
         token.credentials,
     ):
         raise HTTPException(
