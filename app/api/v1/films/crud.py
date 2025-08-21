@@ -45,7 +45,11 @@ class FilmStorage(BaseModel):
         return list(self.slug_to_item.values())
 
     def get_by_slug(self, slug: str) -> Films | None:
-        return self.slug_to_item.get(slug)
+        data = redis_storage.hget(
+            name=config.REDIS_TOKENS_FILMS_HASH_NAME,
+            key=slug,
+        )
+        return Films.model_validate_json(data) if data else None
 
     def create(self, data: FilmsCreate) -> Films:
         new_film = Films(**data.model_dump())
