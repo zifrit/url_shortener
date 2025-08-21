@@ -42,7 +42,14 @@ class ShortUrlStorage(BaseModel):
             log.warning("Rewritten short url storage file")
 
     def get(self) -> list[ShortUrl]:
-        return list(self.slug_to_item.values())
+        datas = redis_storage.hvals(
+            name=config.REDIS_TOKENS_SHORT_URL_HASH_NAME,
+        )
+        return (
+            [ShortUrl.model_validate_json(short_url) for short_url in datas]
+            if datas
+            else []
+        )
 
     def get_by_slug(self, slug: str) -> ShortUrl | None:
         data = redis_storage.hget(

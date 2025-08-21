@@ -42,7 +42,10 @@ class FilmStorage(BaseModel):
         log.warning("Recovered data from films file")
 
     def get(self) -> list[Films]:
-        return list(self.slug_to_item.values())
+        datas = redis_storage.hvals(
+            name=config.REDIS_TOKENS_FILMS_HASH_NAME,
+        )
+        return [Films.model_validate_json(film) for film in datas] if datas else []
 
     def get_by_slug(self, slug: str) -> Films | None:
         data = redis_storage.hget(
