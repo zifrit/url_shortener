@@ -16,6 +16,18 @@ redis_storage = Redis(
 )
 
 
+class FilmError(Exception):
+    """
+    Film related error
+    """
+
+
+class AlreadyExistFilmError(FilmError):
+    """
+    Film already exists error
+    """
+
+
 class FilmStorage(BaseModel):
     slug_to_item: dict[str, Films] = {}
 
@@ -45,6 +57,19 @@ class FilmStorage(BaseModel):
         log.info("Created new film %s", new_film)
         self.save_to_redis_storage(new_film)
         return new_film
+
+    def exists(self, slug: str) -> bool:
+        return redis_storage.hexists(
+            name=config.REDIS_TOKENS_FILMS_HASH_NAME,
+            key=slug,
+        )
+
+    def create_or_raise_if_not_exists(
+        self, film: FilmsCreate
+    ) -> Films | AlreadyExistFilmError:
+        if not self.exists(film.slug):
+            return self.create(film)
+        raise AlreadyExistFilmError(film.slug)
 
     def delete_by_slug(self, slug: str) -> None:
         redis_storage.hdel(config.REDIS_TOKENS_FILMS_HASH_NAME, slug)

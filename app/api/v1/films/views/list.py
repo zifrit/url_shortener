@@ -1,6 +1,6 @@
 from fastapi import status, HTTPException
 
-from api.v1.films.crud import film_storage
+from api.v1.films.crud import film_storage, AlreadyExistFilmError
 from schemas import Films, FilmsCreate, FilmsRead
 from fastapi import APIRouter, BackgroundTasks
 
@@ -33,9 +33,10 @@ def read_film_list() -> list[Films]:
 def create_film(
     film: FilmsCreate,
 ):
-    if not film_storage.get_by_slug(film.slug):
-        return film_storage.create(film)
-    raise HTTPException(
-        status_code=status.HTTP_409_CONFLICT,
-        detail=f"Film with this slug={film.slug!r} already exists",
-    )
+    try:
+        return film_storage.create_or_raise_if_not_exists(film)
+    except AlreadyExistFilmError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Film with this slug={film.slug!r} already exists",
+        )

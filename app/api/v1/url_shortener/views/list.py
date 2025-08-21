@@ -1,6 +1,6 @@
 from typing import Annotated
 from fastapi import APIRouter, Request, status, Body, HTTPException
-from api.v1.url_shortener.crud import storage
+from api.v1.url_shortener.crud import storage, AlreadyExistsShortUrlError
 from schemas import ShortUrl, ShortUrlCreate, ShortUrlRead
 
 router = APIRouter(
@@ -33,9 +33,10 @@ def read_short_url_list(request: Request) -> list[ShortUrl]:
 def create_short_url(
     short_url_create: Annotated[ShortUrlCreate, Body()],
 ) -> ShortUrl:
-    if not storage.get_by_slug(short_url_create.slug):
-        return storage.create(short_url_create)
-    raise HTTPException(
-        status_code=status.HTTP_409_CONFLICT,
-        detail=f"Short URL with this slug={short_url_create.slug!r} already exists",
-    )
+    try:
+        return storage.create_or_raise_if_not_exists(short_url=short_url_create)
+    except AlreadyExistsShortUrlError:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Short URL with this slug={short_url_create.slug!r} already exists",
+        )
