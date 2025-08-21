@@ -25,6 +25,14 @@ class FilmStorage(BaseModel):
         log.info("Saved films to storage file")
 
     @classmethod
+    def save_to_redis_storage(cls, film: Films) -> None:
+        redis_storage.hset(
+            name=config.REDIS_TOKENS_FILMS_HASH_NAME,
+            key=film.slug,
+            value=film.model_dump_json(),
+        )
+
+    @classmethod
     def load(cls) -> "FilmStorage":
         if not FILM_DIR.exists():
             log.info("Fils directory does not exist")
@@ -56,12 +64,8 @@ class FilmStorage(BaseModel):
 
     def create(self, data: FilmsCreate) -> Films:
         new_film = Films(**data.model_dump())
-        redis_storage.hset(
-            name=config.REDIS_TOKENS_FILMS_HASH_NAME,
-            key=new_film.slug,
-            value=new_film.model_dump_json(),
-        )
         log.info("Created new film %s", new_film)
+        self.save_to_redis_storage(new_film)
         return new_film
 
     def delete_by_slug(self, slug: str) -> None:
@@ -73,11 +77,13 @@ class FilmStorage(BaseModel):
     def update(self, film: Films, film_in: FilmsUpdate) -> Films:
         for key, value in film_in:
             setattr(film, key, value)
+        self.save_to_redis_storage(film)
         return film
 
     def particular_update(self, film: Films, film_in: FilmsParticularUpdate) -> Films:
         for key, value in film_in.model_dump(exclude_unset=True).items():
             setattr(film, key, value)
+        self.save_to_redis_storage(film)
         return film
 
 

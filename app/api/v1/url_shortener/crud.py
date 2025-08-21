@@ -25,6 +25,14 @@ class ShortUrlStorage(BaseModel):
         log.info("Saved short url to storage file")
 
     @classmethod
+    def save_to_redis_storage(cls, short_url: ShortUrl) -> None:
+        redis_storage.hset(
+            name=config.REDIS_TOKENS_SHORT_URL_HASH_NAME,
+            key=short_url.slug,
+            value=short_url.model_dump_json(),
+        )
+
+    @classmethod
     def load(cls) -> "ShortUrlStorage":
         if not SHORT_URL_DIR.exists():
             log.info("Short url directory does not exist")
@@ -61,11 +69,7 @@ class ShortUrlStorage(BaseModel):
     def create(self, data: ShortUrlCreate) -> ShortUrl:
         new_short_url = ShortUrl(**data.model_dump())
         log.info("Created new short url %s", new_short_url)
-        redis_storage.hset(
-            name=config.REDIS_TOKENS_SHORT_URL_HASH_NAME,
-            key=new_short_url.slug,
-            value=new_short_url.model_dump_json(),
-        )
+        self.save_to_redis_storage(new_short_url)
         return new_short_url
 
     def delete_by_slug(self, slug: str) -> None:
@@ -77,6 +81,7 @@ class ShortUrlStorage(BaseModel):
     def update(self, short_url: ShortUrl, short_url_in: ShortUrlUpdate) -> ShortUrl:
         for key, value in short_url_in:
             setattr(short_url, key, value)
+        self.save_to_redis_storage(short_url)
         return short_url
 
     def particular_update(
@@ -84,6 +89,7 @@ class ShortUrlStorage(BaseModel):
     ) -> ShortUrl:
         for key, value in short_url_in.model_dump(exclude_unset=True).items():
             setattr(short_url, key, value)
+        self.save_to_redis_storage(short_url)
         return short_url
 
 
