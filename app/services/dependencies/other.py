@@ -8,7 +8,6 @@ from fastapi.security import (
     HTTPBasic,
     HTTPBasicCredentials,
 )
-from core.config import API_TOKENS, USERS
 from services.dependencies.url_shortener import UNSAFE_METHODS
 from api.v1.auth.services.by_token import cache_token_storage
 from api.v1.auth.services.by_username_and_password import cache_user_storage

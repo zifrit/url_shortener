@@ -1,11 +1,20 @@
 import logging
-
+from redis import Redis
 from pydantic import BaseModel, ValidationError, HttpUrl
 
 from core import SHORT_URL_DIR
+from core import config
 from schemas import ShortUrl, ShortUrlCreate, ShortUrlUpdate, ShortUrlParticularUpdate
 
 log = logging.getLogger(__name__)
+
+
+redis_storage = Redis(
+    port=config.REDIS_PORT,
+    host=config.REDIS_HOST,
+    db=config.REDIS_DB_SHORT_URL,
+    decode_responses=True,
+)
 
 
 class ShortUrlStorage(BaseModel):
@@ -40,8 +49,12 @@ class ShortUrlStorage(BaseModel):
 
     def create(self, data: ShortUrlCreate) -> ShortUrl:
         new_short_url = ShortUrl(**data.model_dump())
-        self.slug_to_item[new_short_url.slug] = new_short_url
         log.info("Created new short url %s", new_short_url)
+        redis_storage.hset(
+            name=config.REDIS_TOKENS_SHORT_URL_HASH_NAME,
+            key=new_short_url.slug,
+            value=new_short_url.model_dump_json(),
+        )
         return new_short_url
 
     def delete_by_slug(self, slug: str) -> None:
