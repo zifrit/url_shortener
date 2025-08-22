@@ -13,7 +13,7 @@ app = typer.Typer(
 
 
 @app.command(
-    help="Name",
+    help="Check token",
 )
 def check(
     token: Annotated[
@@ -29,3 +29,12 @@ def check(
             else "[red]dose not exist[/red]"
         ),
     )
+
+
+@app.command(
+    help="Gel all tokens",
+    name="list",
+)
+def all_tokens():
+    for token in cache_token_storage.gel_all():
+        print(f"- [bold]{token}[/bold]")

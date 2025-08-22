@@ -24,6 +24,13 @@ class ABCTokenRedisStorage(ABC):
         :return:
         """
 
+    @abstractmethod
+    def gel_all(self) -> list[str]:
+        """
+        Get all tokens.
+        :return:
+        """
+
     @classmethod
     def generate_token(cls) -> str:
         return secrets.token_urlsafe(20)
@@ -63,6 +70,13 @@ class RedisTokenStorage(ABCTokenRedisStorage):
         self.redis_client.sadd(
             self.token_set_name,
             token,
+        )
+
+    def gel_all(self) -> list[str]:
+        return list(
+            self.redis_client.smembers(
+                name=self.token_set_name,
+            )
         )
 
 
