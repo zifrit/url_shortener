@@ -38,3 +38,40 @@ def check(
 def all_tokens():
     for token in cache_token_storage.gel_all():
         print(f"- [bold]{token}[/bold]")
+
+
+@app.command(
+    help="Create token",
+    name="create",
+)
+def create_token():
+    token = cache_token_storage.generate_and_save_token()
+    print(f"- Create new token - [bold]{token}[/bold]")
+
+
+@app.command(
+    help="Add new token",
+    name="add",
+)
+def add_new_token(
+    token: Annotated[
+        str,
+        typer.Argument(help="Add token"),
+    ],
+):
+    cache_token_storage.add_token(token)
+    print(f"- Token [bold]{token}[/bold] was added ")
+
+
+@app.command(
+    help="Remove token",
+    name="remove",
+)
+def remove_token(
+    token: Annotated[
+        str,
+        typer.Argument(help="Token"),
+    ],
+):
+    cache_token_storage.rm_token(token)
+    print(f"- The token [bold]{token}[/bold] was deleted ")

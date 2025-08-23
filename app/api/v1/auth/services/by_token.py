@@ -31,6 +31,14 @@ class ABCTokenRedisStorage(ABC):
         :return:
         """
 
+    @abstractmethod
+    def rm_token(self, token: str) -> None:
+        """
+        Remove token from storage.
+        :param token:
+        :return:
+        """
+
     @classmethod
     def generate_token(cls) -> str:
         return secrets.token_urlsafe(20)
@@ -77,6 +85,12 @@ class RedisTokenStorage(ABCTokenRedisStorage):
             self.redis_client.smembers(
                 name=self.token_set_name,
             )
+        )
+
+    def rm_token(self, token: str) -> None:
+        self.redis_client.srem(
+            self.token_set_name,
+            token,
         )
 
 
