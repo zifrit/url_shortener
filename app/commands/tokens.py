@@ -73,5 +73,9 @@ def remove_token(
         typer.Argument(help="Token"),
     ],
 ):
-    cache_token_storage.rm_token(token)
-    print(f"- The token [bold]{token}[/bold] was deleted ")
+    if cache_token_storage.token_exists(token):
+        cache_token_storage.rm_token(token)
+        print(f"- The token [bold]{token}[/bold] [green]was deleted[/green]")
+        return
+    print(f"- The token [bold]{token}[/bold] [red]dose not exist[/red]")
+    return
