@@ -4,6 +4,7 @@ from pydantic import BaseModel, ValidationError, HttpUrl
 
 from core import config
 from schemas import ShortUrl, ShortUrlCreate, ShortUrlUpdate, ShortUrlParticularUpdate
+from typing import cast
 
 log = logging.getLogger(__name__)
 
@@ -40,8 +41,11 @@ class ShortUrlStorage(BaseModel):
         )
 
     def get(self) -> list[ShortUrl]:
-        datas = redis_storage.hvals(
-            name=config.REDIS_TOKENS_SHORT_URL_HASH_NAME,
+        datas = cast(
+            list[str],
+            redis_storage.hvals(
+                name=config.REDIS_TOKENS_SHORT_URL_HASH_NAME,
+            ),
         )
         return (
             [ShortUrl.model_validate_json(short_url) for short_url in datas]
@@ -50,9 +54,12 @@ class ShortUrlStorage(BaseModel):
         )
 
     def get_by_slug(self, slug: str) -> ShortUrl | None:
-        data = redis_storage.hget(
-            name=config.REDIS_TOKENS_SHORT_URL_HASH_NAME,
-            key=slug,
+        data = cast(
+            str,
+            redis_storage.hget(
+                name=config.REDIS_TOKENS_SHORT_URL_HASH_NAME,
+                key=slug,
+            ),
         )
         return ShortUrl.model_validate_json(data) if data else None
 
@@ -63,9 +70,12 @@ class ShortUrlStorage(BaseModel):
         return new_short_url
 
     def exists(self, slug: str) -> bool:
-        return redis_storage.hexists(
-            name=config.REDIS_TOKENS_SHORT_URL_HASH_NAME,
-            key=slug,
+        return cast(
+            bool,
+            redis_storage.hexists(
+                name=config.REDIS_TOKENS_SHORT_URL_HASH_NAME,
+                key=slug,
+            ),
         )
 
     def create_or_raise_if_exists(

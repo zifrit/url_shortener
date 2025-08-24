@@ -30,7 +30,7 @@ class ShortUrlUpdate(ShortUrlBase):
     description: DescriptionString
 
 
-class ShortUrlParticularUpdate(ShortUrlBase):
+class ShortUrlParticularUpdate(BaseModel):
     """
     ShortUrlParticularUpdate model for particular update short url
     """

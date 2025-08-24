@@ -2,7 +2,7 @@ import secrets
 from abc import ABC, abstractmethod
 
 from redis import Redis
-
+from typing import cast
 from core import config
 
 
@@ -82,8 +82,11 @@ class RedisTokenStorage(ABCTokenRedisStorage):
 
     def gel_all(self) -> list[str]:
         return list(
-            self.redis_client.smembers(
-                name=self.token_set_name,
+            cast(
+                set[str],
+                self.redis_client.smembers(
+                    name=self.token_set_name,
+                ),
             )
         )
 

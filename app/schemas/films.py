@@ -32,7 +32,7 @@ class FilmsUpdate(FilmsBase):
     description: DescriptionString
 
 
-class FilmsParticularUpdate(FilmsBase):
+class FilmsParticularUpdate(BaseModel):
     """
     FilmsParticularUpdate model for particular update film
     """

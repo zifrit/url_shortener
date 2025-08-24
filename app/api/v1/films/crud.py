@@ -4,6 +4,7 @@ from pydantic import BaseModel, ValidationError
 
 from core import config
 from schemas import Films, FilmsCreate, FilmsUpdate, FilmsParticularUpdate
+from typing import cast
 
 log = logging.getLogger(__name__)
 
@@ -40,15 +41,21 @@ class FilmStorage(BaseModel):
         )
 
     def get(self) -> list[Films]:
-        datas = redis_storage.hvals(
-            name=config.REDIS_TOKENS_FILMS_HASH_NAME,
+        datas = cast(
+            list[str],
+            redis_storage.hvals(
+                name=config.REDIS_TOKENS_FILMS_HASH_NAME,
+            ),
         )
         return [Films.model_validate_json(film) for film in datas] if datas else []
 
     def get_by_slug(self, slug: str) -> Films | None:
-        data = redis_storage.hget(
-            name=config.REDIS_TOKENS_FILMS_HASH_NAME,
-            key=slug,
+        data = cast(
+            str,
+            redis_storage.hget(
+                name=config.REDIS_TOKENS_FILMS_HASH_NAME,
+                key=slug,
+            ),
         )
         return Films.model_validate_json(data) if data else None
 
@@ -59,9 +66,12 @@ class FilmStorage(BaseModel):
         return new_film
 
     def exists(self, slug: str) -> bool:
-        return redis_storage.hexists(
-            name=config.REDIS_TOKENS_FILMS_HASH_NAME,
-            key=slug,
+        return cast(
+            bool,
+            redis_storage.hexists(
+                name=config.REDIS_TOKENS_FILMS_HASH_NAME,
+                key=slug,
+            ),
         )
 
     def create_or_raise_if_exists(

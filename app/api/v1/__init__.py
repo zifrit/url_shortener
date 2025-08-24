@@ -1,8 +1,6 @@
 from fastapi import APIRouter, Depends
 
 from services.dependencies.other import (
-    api_token_auth,
-    username_password_auth,
     combine_auth,
 )
 from .url_shortener.views import router as url_shortener_router

@@ -2,15 +2,16 @@ from typing import Annotated
 
 from fastapi import APIRouter, Request, HTTPException, status, Depends
 from fastapi.responses import RedirectResponse
+from pydantic import HttpUrl
 from schemas import ShortUrl
 
 SHORT_URL = [
     ShortUrl(
-        taget_url="http://www.google.com",
+        taget_url=HttpUrl("https://www.google.com"),
         slug="google",
     ),
     ShortUrl(
-        taget_url="http://www.example.com",
+        taget_url=HttpUrl("https://www.example.com"),
         slug="search",
     ),
 ]
@@ -40,4 +41,4 @@ def redirect_url(
         Depends(prefetch_slug_url),
     ],
 ):
-    return RedirectResponse(url=url.taget_url)
+    return RedirectResponse(url=str(url.taget_url))

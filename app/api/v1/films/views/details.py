@@ -62,7 +62,7 @@ def update_film_details(
     status_code=status.HTTP_200_OK,
     response_model=FilmsRead,
 )
-def update_film_details(
+def particular_update_film_details(
     film: FilmBySlug,
     film_in: FilmsParticularUpdate,
 ) -> Films:

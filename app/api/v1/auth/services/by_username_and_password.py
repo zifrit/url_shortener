@@ -1,9 +1,9 @@
-import secrets
 from abc import ABC, abstractmethod
 
 from redis import Redis
 
 from core import config
+from typing import cast
 
 
 class ABCUsersStorage(ABC):
@@ -54,7 +54,10 @@ class RedisUserstorage(ABCUsersStorage):
         )
 
     def get_user_password(self, username: str) -> str | None:
-        return self.redis_client.get(username)
+        return cast(
+            str | None,
+            self.redis_client.get(username),
+        )
 
 
 cache_user_storage = RedisUserstorage()
