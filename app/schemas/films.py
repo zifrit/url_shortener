@@ -1,6 +1,6 @@
 from typing import Annotated
-from annotated_types import Len
 
+from annotated_types import Len
 from pydantic import BaseModel
 
 DescriptionString = Annotated[str, Len(max_length=200)]

@@ -1,9 +1,8 @@
 from typing import Annotated
 
 import typer
-from rich import print
-
 from app.api.v1.auth.services.by_token import cache_token_storage
+from rich import print
 
 app = typer.Typer(
     name="tokens",

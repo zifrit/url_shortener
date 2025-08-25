@@ -2,10 +2,10 @@ __all__ = "cache_token_storage"
 
 import secrets
 from abc import ABC, abstractmethod
-
-from redis import Redis
 from typing import cast
+
 from app.core import config
+from redis import Redis
 
 
 class ABCTokenRedisStorage(ABC):
@@ -59,7 +59,7 @@ class RedisTokenStorage(ABCTokenRedisStorage):
         port: int = config.REDIS_PORT,
         db: int = config.REDIS_DB_TOKENS,
         token_set_name: str = config.REDIS_TOKENS_SET_NAME,
-    ):
+    ) -> None:
         self.redis_client = Redis(
             host=host,
             port=port,

@@ -1,9 +1,8 @@
 from abc import ABC, abstractmethod
-
-from redis import Redis
+from typing import cast
 
 from app.core import config
-from typing import cast
+from redis import Redis
 
 
 class ABCUsersStorage(ABC):
@@ -45,7 +44,7 @@ class RedisUserstorage(ABCUsersStorage):
         host: str = config.REDIS_HOST,
         port: int = config.REDIS_PORT,
         db: int = config.REDIS_DB_USERS,
-    ):
+    ) -> None:
         self.redis_client = Redis(
             host=host,
             port=port,

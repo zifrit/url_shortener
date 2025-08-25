@@ -1,17 +1,17 @@
 __all__ = "storage"
 
 import logging
-from redis import Redis
-from pydantic import BaseModel, ValidationError, HttpUrl
+from typing import cast
 
 from app.core import config
 from app.schemas import (
     ShortUrl,
     ShortUrlCreate,
-    ShortUrlUpdate,
     ShortUrlParticularUpdate,
+    ShortUrlUpdate,
 )
-from typing import cast
+from pydantic import BaseModel
+from redis import Redis
 
 log = logging.getLogger(__name__)
 

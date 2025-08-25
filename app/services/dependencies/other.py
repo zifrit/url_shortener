@@ -1,16 +1,16 @@
 import logging
 from typing import Annotated
 
-from fastapi import Depends, status, HTTPException, Request
-from fastapi.security import (
-    HTTPAuthorizationCredentials,
-    HTTPBearer,
-    HTTPBasic,
-    HTTPBasicCredentials,
-)
-from app.services.dependencies.url_shortener import UNSAFE_METHODS
 from app.api.v1.auth.services.by_token import cache_token_storage
 from app.api.v1.auth.services.by_username_and_password import cache_user_storage
+from app.services.dependencies.url_shortener import UNSAFE_METHODS
+from fastapi import Depends, HTTPException, Request, status
+from fastapi.security import (
+    HTTPAuthorizationCredentials,
+    HTTPBasic,
+    HTTPBasicCredentials,
+    HTTPBearer,
+)
 
 log = logging.getLogger(__name__)
 
