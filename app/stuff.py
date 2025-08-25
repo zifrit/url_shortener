@@ -1,5 +1,5 @@
 from redis import Redis
-from core import config
+from app.core import config
 
 cache = Redis(
     host=config.REDIS_HOST,
@@ -8,7 +8,7 @@ cache = Redis(
 )
 
 
-def main():
+def main() -> None:
     cache.set("foo", "bar")
     cache.set("bob", "Dilan")
     print(cache.keys())

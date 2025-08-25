@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Request, HTTPException, status, Depends
 from fastapi.responses import RedirectResponse
 from pydantic import HttpUrl
-from schemas import ShortUrl
+from app.schemas import ShortUrl
 
 SHORT_URL = [
     ShortUrl(
@@ -40,5 +40,5 @@ def redirect_url(
         ShortUrl,
         Depends(prefetch_slug_url),
     ],
-):
+) -> RedirectResponse:
     return RedirectResponse(url=str(url.taget_url))

@@ -12,12 +12,12 @@ app = typer.Typer(
 @app.command(
     help="Name",
 )
-def hello(name: Annotated[str, typer.Argument(help="Name to grate")]):
+def hello(name: Annotated[str, typer.Argument(help="Name to grate")]) -> None:
     print(f"[bold green]hello {name}[/bold green]")
 
 
 @app.callback()
-def callback():
+def callback() -> None:
     """
     Something callback
     """

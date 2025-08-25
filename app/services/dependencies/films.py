@@ -3,9 +3,9 @@ import logging
 from fastapi import HTTPException, BackgroundTasks, Request
 from starlette import status
 
-from api.v1.films.crud import film_storage
-from schemas import Films
-from .url_shortener import UNSAFE_METHODS
+from app.api.v1.films.crud import film_storage
+from app.schemas import Films
+from app.services.dependencies.url_shortener import UNSAFE_METHODS
 
 log = logging.getLogger(__name__)
 

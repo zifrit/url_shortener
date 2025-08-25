@@ -3,9 +3,9 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, BackgroundTasks
 from starlette import status
 
-from api.v1.films.crud import film_storage
-from schemas import Films, FilmsUpdate, FilmsParticularUpdate, FilmsRead
-from services.dependencies.films import prefetch_film
+from app.api.v1.films.crud import film_storage
+from app.schemas import Films, FilmsUpdate, FilmsParticularUpdate, FilmsRead
+from app.services.dependencies.films import prefetch_film
 
 router = APIRouter(
     prefix="/{slug}",

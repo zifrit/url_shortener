@@ -3,7 +3,7 @@ from typing import Annotated
 import typer
 from rich import print
 
-from api.v1.auth.services.by_token import cache_token_storage
+from app.api.v1.auth.services.by_token import cache_token_storage
 
 app = typer.Typer(
     name="tokens",
@@ -20,7 +20,7 @@ def check(
         str,
         typer.Argument(help="The token to check"),
     ],
-):
+) -> None:
     print(
         f"Token: [bold]{token}[/bold]",
         (
@@ -35,7 +35,7 @@ def check(
     help="Gel all tokens",
     name="list",
 )
-def all_tokens():
+def all_tokens() -> None:
     for token in cache_token_storage.gel_all():
         print(f"- [bold]{token}[/bold]")
 
@@ -44,7 +44,7 @@ def all_tokens():
     help="Create token",
     name="create",
 )
-def create_token():
+def create_token() -> None:
     token = cache_token_storage.generate_and_save_token()
     print(f"- Create new token - [bold]{token}[/bold]")
 
@@ -58,7 +58,7 @@ def add_new_token(
         str,
         typer.Argument(help="Add token"),
     ],
-):
+) -> None:
     cache_token_storage.add_token(token)
     print(f"- Token [bold]{token}[/bold] was added ")
 
@@ -72,7 +72,7 @@ def remove_token(
         str,
         typer.Argument(help="Token"),
     ],
-):
+) -> None:
     if cache_token_storage.token_exists(token):
         cache_token_storage.rm_token(token)
         print(f"- The token [bold]{token}[/bold] [green]was deleted[/green]")

@@ -3,8 +3,8 @@ import logging
 from fastapi import HTTPException, BackgroundTasks, Request
 from starlette import status
 
-from api.v1.url_shortener.crud import storage
-from schemas import ShortUrl
+from app.api.v1.url_shortener.crud import storage
+from app.schemas import ShortUrl
 
 UNSAFE_METHODS = frozenset(
     {

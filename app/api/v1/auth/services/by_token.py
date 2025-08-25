@@ -1,9 +1,11 @@
+__all__ = "cache_token_storage"
+
 import secrets
 from abc import ABC, abstractmethod
 
 from redis import Redis
 from typing import cast
-from core import config
+from app.core import config
 
 
 class ABCTokenRedisStorage(ABC):

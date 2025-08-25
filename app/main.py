@@ -1,9 +1,9 @@
 import logging
 import uvicorn
 from fastapi import FastAPI, Request
-from api import router as api_router
-from core.config import LOG_FORMAT, LOG_LEVEL
-from lifespan import lifespan
+from app.api import router as api_router
+from app.core.config import LOG_FORMAT, LOG_LEVEL
+from app.lifespan import lifespan
 
 logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
 app = FastAPI(lifespan=lifespan)

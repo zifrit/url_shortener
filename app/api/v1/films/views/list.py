@@ -1,7 +1,7 @@
 from fastapi import status, HTTPException
 
-from api.v1.films.crud import film_storage, AlreadyExistFilmError
-from schemas import Films, FilmsCreate, FilmsRead
+from app.api.v1.films.crud import film_storage, AlreadyExistFilmError
+from app.schemas import Films, FilmsCreate, FilmsRead
 from fastapi import APIRouter, BackgroundTasks
 
 
@@ -32,7 +32,7 @@ def read_film_list() -> list[Films]:
 )
 def create_film(
     film: FilmsCreate,
-):
+) -> Films | AlreadyExistFilmError:
     try:
         return film_storage.create_or_raise_if_exists(film)
     except AlreadyExistFilmError:

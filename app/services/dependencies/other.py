@@ -8,9 +8,9 @@ from fastapi.security import (
     HTTPBasic,
     HTTPBasicCredentials,
 )
-from services.dependencies.url_shortener import UNSAFE_METHODS
-from api.v1.auth.services.by_token import cache_token_storage
-from api.v1.auth.services.by_username_and_password import cache_user_storage
+from app.services.dependencies.url_shortener import UNSAFE_METHODS
+from app.api.v1.auth.services.by_token import cache_token_storage
+from app.api.v1.auth.services.by_username_and_password import cache_user_storage
 
 log = logging.getLogger(__name__)
 
@@ -27,7 +27,7 @@ base_security = HTTPBasic(
 )
 
 
-def api_token_validate(token: HTTPAuthorizationCredentials):
+def api_token_validate(token: HTTPAuthorizationCredentials) -> None:
 
     log.info("API token %s", token)
     if not cache_token_storage.token_exists(
@@ -45,7 +45,7 @@ def api_token_auth(
         HTTPAuthorizationCredentials | None,
         Depends(security),
     ] = None,
-):
+) -> None:
 
     if request.method not in UNSAFE_METHODS:
         return
@@ -57,7 +57,7 @@ def api_token_auth(
     api_token_validate(token)
 
 
-def username_password_validate(cred: HTTPBasicCredentials | None):
+def username_password_validate(cred: HTTPBasicCredentials | None) -> None:
 
     log.info("Credentials %s", cred)
     if cred and cache_user_storage.validate_user_password(cred.username, cred.password):
@@ -75,7 +75,7 @@ def username_password_auth(
         HTTPBasicCredentials | None,
         Depends(base_security),
     ] = None,
-):
+) -> None:
 
     if request.method not in UNSAFE_METHODS:
         return
@@ -93,7 +93,7 @@ def combine_auth(
         HTTPBasicCredentials | None,
         Depends(base_security),
     ] = None,
-):
+) -> None:
 
     if request.method not in UNSAFE_METHODS:
         return

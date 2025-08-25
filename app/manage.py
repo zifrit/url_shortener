@@ -1,5 +1,5 @@
 #!/usr/bin/env -S uv run --script
-from commands.cli import app
+from app.commands.cli import app
 
 
 if __name__ == "__main__":

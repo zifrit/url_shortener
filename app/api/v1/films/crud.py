@@ -1,9 +1,11 @@
+__all__ = "film_storage"
+
 import logging
 from redis import Redis
 from pydantic import BaseModel, ValidationError
 
-from core import config
-from schemas import Films, FilmsCreate, FilmsUpdate, FilmsParticularUpdate
+from app.core import config
+from app.schemas import Films, FilmsCreate, FilmsUpdate, FilmsParticularUpdate
 from typing import cast
 
 log = logging.getLogger(__name__)

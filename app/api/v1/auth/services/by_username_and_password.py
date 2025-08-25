@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 from redis import Redis
 
-from core import config
+from app.core import config
 from typing import cast
 
 
