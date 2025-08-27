@@ -1,4 +1,4 @@
-__all__ = "storage"
+__all__ = ["storage"]
 
 import logging
 from typing import cast
@@ -86,7 +86,8 @@ class ShortUrlStorage(BaseModel):
         )
 
     def create_or_raise_if_exists(
-        self, short_url: ShortUrlCreate
+        self,
+        short_url: ShortUrlCreate,
     ) -> ShortUrl | AlreadyExistsShortUrlError:
         if not self.exists(short_url.slug):
             return self.create(short_url)
@@ -105,7 +106,9 @@ class ShortUrlStorage(BaseModel):
         return short_url
 
     def particular_update(
-        self, short_url: ShortUrl, short_url_in: ShortUrlParticularUpdate
+        self,
+        short_url: ShortUrl,
+        short_url_in: ShortUrlParticularUpdate,
     ) -> ShortUrl:
         for key, value in short_url_in.model_dump(exclude_unset=True).items():
             setattr(short_url, key, value)

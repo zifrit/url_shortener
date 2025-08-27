@@ -96,7 +96,7 @@ def combine_auth(
 ) -> None:
 
     if request.method not in UNSAFE_METHODS:
-        return
+        return None
 
     if token:
         return api_token_validate(token)

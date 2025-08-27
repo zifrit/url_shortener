@@ -1,4 +1,4 @@
-__all__ = "cache_token_storage"
+__all__ = ["cache_token_storage"]
 
 import secrets
 from abc import ABC, abstractmethod
@@ -89,7 +89,7 @@ class RedisTokenStorage(ABCTokenRedisStorage):
                 self.redis_client.smembers(
                     name=self.token_set_name,
                 ),
-            )
+            ),
         )
 
     def rm_token(self, token: str) -> None:

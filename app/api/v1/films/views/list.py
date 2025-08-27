@@ -32,8 +32,8 @@ def create_film(
 ) -> Films | AlreadyExistFilmError:
     try:
         return film_storage.create_or_raise_if_exists(film)
-    except AlreadyExistFilmError:
+    except AlreadyExistFilmError as e:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Film with this slug={film.slug!r} already exists",
-        )
+        ) from e

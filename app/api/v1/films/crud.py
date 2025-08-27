@@ -1,4 +1,4 @@
-__all__ = "film_storage"
+__all__ = ["film_storage"]
 
 import logging
 from typing import cast
@@ -77,7 +77,8 @@ class FilmStorage(BaseModel):
         )
 
     def create_or_raise_if_exists(
-        self, film: FilmsCreate
+        self,
+        film: FilmsCreate,
     ) -> Films | AlreadyExistFilmError:
         if not self.exists(film.slug):
             return self.create(film)
