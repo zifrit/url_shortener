@@ -82,3 +82,40 @@ class FilmsTestCase(TestCase):
             film.name,
             particular_film.name,
         )
+
+        self.assertEqual(
+            "some-author",
+            film.author,
+        )
+
+        self.assertEqual(
+            "some-description",
+            film.description,
+        )
+
+        film = Films(
+            slug="some-slug",
+            name="some-name",
+            description="some-description",
+            author="some-author",
+        )
+
+        particular_film = FilmsParticularUpdate()
+
+        for key, value in particular_film.model_dump(exclude_unset=True).items():
+            setattr(film, key, value)
+
+        self.assertEqual(
+            "some-name",
+            film.name,
+        )
+
+        self.assertEqual(
+            "some-author",
+            film.author,
+        )
+
+        self.assertEqual(
+            "some-description",
+            film.description,
+        )

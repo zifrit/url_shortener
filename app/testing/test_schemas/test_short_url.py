@@ -69,3 +69,29 @@ class ShortUrlTestCase(TestCase):
             updated_short_url.description,
             short_url.description,
         )
+
+        self.assertEqual(
+            "https://example.com/",
+            short_url.taget_url.__str__(),
+        )
+
+        short_url = ShortUrl(
+            slug="some-slug",
+            description="some-description",
+            taget_url="https://example.com",
+        )
+
+        updated_short_url = ShortUrlParticularUpdate()
+
+        for key, value in updated_short_url.model_dump(exclude_unset=True).items():
+            setattr(short_url, key, value)
+
+        self.assertEqual(
+            "https://example.com/",
+            short_url.taget_url.__str__(),
+        )
+
+        self.assertEqual(
+            "some-description",
+            short_url.description,
+        )
