@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from schemas.short_url import ShortUrl, ShortUrlCreate
+from schemas.short_url import ShortUrl, ShortUrlCreate, ShortUrlUpdate
 
 
 class ShortUrlTestCase(TestCase):
@@ -21,5 +21,28 @@ class ShortUrlTestCase(TestCase):
         )
         self.assertEqual(
             short_url_in.taget_url,
+            short_url.taget_url,
+        )
+
+    def test_short_url_can_be_updated_from_update_schemas(self) -> None:
+        short_url = ShortUrl(
+            slug="some-slug",
+            description="some-description",
+            taget_url="https://example.com",
+        )
+        updated_short_url = ShortUrlUpdate(
+            taget_url="https://example.com",
+            description="some-description",
+        )
+
+        for key, value in updated_short_url:
+            setattr(short_url, key, value)
+
+        self.assertEqual(
+            updated_short_url.description,
+            short_url.description,
+        )
+        self.assertEqual(
+            updated_short_url.taget_url,
             short_url.taget_url,
         )
