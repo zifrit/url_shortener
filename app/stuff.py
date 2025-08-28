@@ -1,5 +1,6 @@
-from app.core import config
 from redis import Redis
+
+from core import config
 
 cache = Redis(
     host=config.REDIS_HOST,

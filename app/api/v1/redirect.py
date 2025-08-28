@@ -1,9 +1,10 @@
 from typing import Annotated
 
-from app.schemas import ShortUrl
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import RedirectResponse
 from pydantic import HttpUrl
+
+from schemas import ShortUrl
 
 SHORT_URL = [
     ShortUrl(

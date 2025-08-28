@@ -1,9 +1,10 @@
 import logging
 
-from app.api.v1.films.crud import film_storage
-from app.schemas import Films
 from fastapi import HTTPException
 from starlette import status
+
+from api.v1.films.crud import film_storage
+from schemas import Films
 
 log = logging.getLogger(__name__)
 

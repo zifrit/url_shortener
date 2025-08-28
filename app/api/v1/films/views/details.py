@@ -1,10 +1,13 @@
 from typing import Annotated
 
-from app.api.v1.films.crud import film_storage
-from app.schemas import Films, FilmsParticularUpdate, FilmsRead, FilmsUpdate
-from app.services.dependencies.films import prefetch_film
 from fastapi import APIRouter, Depends
 from starlette import status
+
+from api.v1.films.crud import film_storage
+
+# from app.api.v1.films.crud import film_storage
+from schemas import Films, FilmsParticularUpdate, FilmsRead, FilmsUpdate
+from services.dependencies.films import prefetch_film
 
 router = APIRouter(
     prefix="/{slug}",

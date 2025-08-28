@@ -1,6 +1,7 @@
-from app.api.v1.films.crud import AlreadyExistFilmError, film_storage
-from app.schemas import Films, FilmsCreate, FilmsRead
 from fastapi import APIRouter, HTTPException, status
+
+from api.v1.films.crud import AlreadyExistFilmError, film_storage
+from schemas import Films, FilmsCreate, FilmsRead
 
 router = APIRouter(
     prefix="/films",

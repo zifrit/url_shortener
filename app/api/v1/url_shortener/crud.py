@@ -3,15 +3,16 @@ __all__ = ["storage"]
 import logging
 from typing import cast
 
-from app.core import config
-from app.schemas import (
+from pydantic import BaseModel
+from redis import Redis
+
+from core import config
+from schemas import (
     ShortUrl,
     ShortUrlCreate,
     ShortUrlParticularUpdate,
     ShortUrlUpdate,
 )
-from pydantic import BaseModel
-from redis import Redis
 
 log = logging.getLogger(__name__)
 

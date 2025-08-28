@@ -1,10 +1,12 @@
-from app.api.v1.films.views import router as films_router
-from app.api.v1.redirect import router as redirect_url_router
-from app.api.v1.url_shortener.views import router as url_shortener_router
-from app.services.dependencies.other import (
+from fastapi import APIRouter, Depends
+
+from services.dependencies.other import (
     combine_auth,
 )
-from fastapi import APIRouter, Depends
+
+from .films.views import router as films_router
+from .redirect import router as redirect_url_router
+from .url_shortener.views import router as url_shortener_router
 
 router = APIRouter(prefix="/v1", dependencies=[Depends(combine_auth)])
 

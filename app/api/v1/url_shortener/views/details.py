@@ -1,10 +1,11 @@
 from typing import Annotated
 
-from app.api.v1.url_shortener.crud import storage
-from app.schemas import ShortUrl, ShortUrlParticularUpdate, ShortUrlRead, ShortUrlUpdate
-from app.services.dependencies.url_shortener import prefetch_slug_url
 from fastapi import APIRouter, Depends
 from starlette import status
+
+from api.v1.url_shortener.crud import storage
+from schemas import ShortUrl, ShortUrlParticularUpdate, ShortUrlRead, ShortUrlUpdate
+from services.dependencies.url_shortener import prefetch_slug_url
 
 router = APIRouter(
     prefix="/{slug}",

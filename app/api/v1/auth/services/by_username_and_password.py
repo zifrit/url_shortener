@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import cast
 
-from app.core import config
 from redis import Redis
+
+from core import config
 
 
 class ABCUsersStorage(ABC):

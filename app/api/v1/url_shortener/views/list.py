@@ -1,8 +1,9 @@
 from typing import Annotated, cast
 
-from app.api.v1.url_shortener.crud import AlreadyExistsShortUrlError, storage
-from app.schemas import ShortUrl, ShortUrlCreate, ShortUrlRead
 from fastapi import APIRouter, Body, HTTPException, status
+
+from api.v1.url_shortener.crud import AlreadyExistsShortUrlError, storage
+from schemas import ShortUrl, ShortUrlCreate, ShortUrlRead
 
 router = APIRouter(
     prefix="/short-urls",

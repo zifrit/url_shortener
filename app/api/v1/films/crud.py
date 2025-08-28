@@ -3,10 +3,11 @@ __all__ = ["film_storage"]
 import logging
 from typing import cast
 
-from app.core import config
-from app.schemas import Films, FilmsCreate, FilmsParticularUpdate, FilmsUpdate
 from pydantic import BaseModel
 from redis import Redis
+
+from core import config
+from schemas import Films, FilmsCreate, FilmsParticularUpdate, FilmsUpdate
 
 log = logging.getLogger(__name__)
 
