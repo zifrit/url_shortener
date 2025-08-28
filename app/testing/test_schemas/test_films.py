@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from schemas.films import Films, FilmsCreate
+from schemas.films import Films, FilmsCreate, FilmsParticularUpdate, FilmsUpdate
 
 
 class FilmsTestCase(TestCase):
@@ -40,19 +40,13 @@ class FilmsTestCase(TestCase):
             description="some-description",
             author="some-author",
         )
-        updated_film = Films(
-            slug="new-some-slug",
+        updated_film = FilmsUpdate(
             name="new-some-name",
             description="new-some-description",
             author="new-some-author",
         )
         for key, value in updated_film:
             setattr(film, key, value)
-
-        self.assertEqual(
-            film.slug,
-            updated_film.slug,
-        )
 
         self.assertEqual(
             film.name,
@@ -67,4 +61,24 @@ class FilmsTestCase(TestCase):
         self.assertEqual(
             film.author,
             updated_film.author,
+        )
+
+    def test_film_can_be_particular_update_from_film_schema(self) -> None:
+        film = Films(
+            slug="some-slug",
+            name="some-name",
+            description="some-description",
+            author="some-author",
+        )
+
+        particular_film = FilmsParticularUpdate(
+            name="new-some-name",
+        )
+
+        for key, value in particular_film.model_dump(exclude_unset=True).items():
+            setattr(film, key, value)
+
+        self.assertEqual(
+            film.name,
+            particular_film.name,
         )
