@@ -119,3 +119,38 @@ class FilmsTestCase(TestCase):
             "some-description",
             film.description,
         )
+
+    def test_film_url_create_accepts_different_data(self) -> None:
+        datas = [
+            (
+                "some-new-slug-1",
+                "some-new-name-1",
+                "some-new-author-1",
+            ),
+            (
+                "some-new-slug-2",
+                "some-new-name-2",
+                "some-new-author-2",
+            ),
+            (
+                "some-new-slug-2",
+                "some-new-name-2",
+                "some-new-author-2",
+            ),
+        ]
+        for slug, name, author in datas:
+            with self.subTest(
+                slug=slug,
+                name=name,
+                author=author,
+                msg="test-create-film",
+            ):
+                film = Films(
+                    slug=slug,
+                    name=name,
+                    description="some-description",
+                    author=author,
+                )
+                self.assertEqual(film.slug, slug)
+                self.assertEqual(film.name, name)
+                self.assertEqual(film.author, author)

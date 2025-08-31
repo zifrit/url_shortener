@@ -13,7 +13,7 @@ class ShortUrlTestCase(TestCase):
         short_url_in = ShortUrlCreate(
             slug="some-slug",
             description="some-description",
-            taget_url="https://example.com",
+            target_url="https://example.com",
         )
         short_url = ShortUrl(**short_url_in.model_dump())
         self.assertEqual(
@@ -25,18 +25,18 @@ class ShortUrlTestCase(TestCase):
             short_url.description,
         )
         self.assertEqual(
-            short_url_in.taget_url,
-            short_url.taget_url,
+            short_url_in.target_url,
+            short_url.target_url,
         )
 
     def test_short_url_can_be_updated_from_update_schemas(self) -> None:
         short_url = ShortUrl(
             slug="some-slug",
             description="some-description",
-            taget_url="https://example.com",
+            target_url="https://example.com",
         )
         updated_short_url = ShortUrlUpdate(
-            taget_url="https://example.com",
+            target_url="https://example.com",
             description="some-new-description",
         )
 
@@ -48,15 +48,15 @@ class ShortUrlTestCase(TestCase):
             short_url.description,
         )
         self.assertEqual(
-            updated_short_url.taget_url,
-            short_url.taget_url,
+            updated_short_url.target_url,
+            short_url.target_url,
         )
 
     def test_short_url_can_be_particular_update_from_update_schemas(self) -> None:
         short_url = ShortUrl(
             slug="some-slug",
             description="some-description",
-            taget_url="https://example.com",
+            target_url="https://example.com",
         )
         updated_short_url = ShortUrlParticularUpdate(
             description="some-new-description",
@@ -72,13 +72,13 @@ class ShortUrlTestCase(TestCase):
 
         self.assertEqual(
             "https://example.com/",
-            short_url.taget_url.__str__(),
+            short_url.target_url.__str__(),
         )
 
         short_url = ShortUrl(
             slug="some-slug",
             description="some-description",
-            taget_url="https://example.com",
+            target_url="https://example.com",
         )
 
         updated_short_url = ShortUrlParticularUpdate()
@@ -88,10 +88,33 @@ class ShortUrlTestCase(TestCase):
 
         self.assertEqual(
             "https://example.com/",
-            short_url.taget_url.__str__(),
+            short_url.target_url.__str__(),
         )
 
         self.assertEqual(
             "some-description",
             short_url.description,
         )
+
+    def test_short_url_create_accepts_different_urls(self) -> None:
+        urls = [
+            "http://example.com",
+            "https://example",
+            "https://goggle",
+            # "rtmp://video.example.com",
+            # "rtmps://video.example.com",
+            "http://abc.example.com",
+            "https://www.example.com/some-test/",
+        ]
+
+        for url in urls:
+            with self.subTest(msg=f"test-url-{url}"):
+                short_url_create = ShortUrlCreate(
+                    slug="some-slug",
+                    description="some-description",
+                    target_url=url,
+                )
+                self.assertEqual(
+                    url.rstrip("/"),
+                    short_url_create.model_dump(mode="json")["target_url"].rstrip("/"),
+                )
