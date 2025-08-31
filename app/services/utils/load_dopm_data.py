@@ -51,13 +51,13 @@
 # def set_default_url_short_data(storage: "ShortUrlStorage") -> "ShortUrlStorage":
 #     storage.create(
 #         ShortUrlCreate(
-#             taget_url=HttpUrl("https://www.google.com"),
+#             target_url=HttpUrl("https://www.google.com"),
 #             slug="google",
 #         ),
 #     )
 #     storage.create(
 #         ShortUrlCreate(
-#             taget_url=HttpUrl("https://www.example.com"),
+#             target_url=HttpUrl("https://www.example.com"),
 #             slug="search",
 #         ),
 #     )

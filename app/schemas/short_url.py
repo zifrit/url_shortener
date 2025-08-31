@@ -7,7 +7,7 @@ DescriptionString = Annotated[str, Len(max_length=200)]
 
 
 class ShortUrlBase(BaseModel):
-    taget_url: HttpUrl
+    target_url: HttpUrl
     description: DescriptionString = ""
 
 
@@ -35,7 +35,7 @@ class ShortUrlParticularUpdate(BaseModel):
     ShortUrlParticularUpdate model for particular update short url
     """
 
-    taget_url: HttpUrl | None = None
+    target_url: HttpUrl | None = None
     description: DescriptionString | None = None
 
 

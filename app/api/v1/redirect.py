@@ -8,11 +8,11 @@ from schemas import ShortUrl
 
 SHORT_URL = [
     ShortUrl(
-        taget_url=HttpUrl("https://www.google.com"),
+        target_url=HttpUrl("https://www.google.com"),
         slug="google",
     ),
     ShortUrl(
-        taget_url=HttpUrl("https://www.example.com"),
+        target_url=HttpUrl("https://www.example.com"),
         slug="search",
     ),
 ]
@@ -42,4 +42,4 @@ def redirect_url(
         Depends(prefetch_slug_url),
     ],
 ) -> RedirectResponse:
-    return RedirectResponse(url=str(url.taget_url))
+    return RedirectResponse(url=str(url.target_url))
