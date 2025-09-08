@@ -18,7 +18,7 @@ class ShortUrlCreate(ShortUrlBase):
 
     slug: Annotated[
         str,
-        Len(min_length=1, max_length=10),
+        Len(min_length=3, max_length=10),
     ]
 
 

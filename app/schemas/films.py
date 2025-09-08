@@ -17,7 +17,10 @@ class FilmsCreate(FilmsBase):
     create films model
     """
 
-    slug: str
+    slug: Annotated[
+        str,
+        Len(min_length=3, max_length=10),
+    ]
     name: Annotated[
         str,
         Len(min_length=1, max_length=10),
