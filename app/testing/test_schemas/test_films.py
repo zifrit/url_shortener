@@ -6,7 +6,9 @@ from pydantic import ValidationError
 from schemas.films import Films, FilmsCreate, FilmsParticularUpdate, FilmsUpdate
 
 if getenv("TESTING") != "1":
-    raise OSError
+    raise OSError(  # noqa: TRY003
+        "Environmental is not ready to start test",  # noqa: EM101
+    )
 
 
 class FilmsTestCase(TestCase):
