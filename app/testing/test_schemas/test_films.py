@@ -1,8 +1,12 @@
+from os import getenv
 from unittest import TestCase
 
 from pydantic import ValidationError
 
 from schemas.films import Films, FilmsCreate, FilmsParticularUpdate, FilmsUpdate
+
+if getenv("TESTING") != "1":
+    raise OSError
 
 
 class FilmsTestCase(TestCase):
