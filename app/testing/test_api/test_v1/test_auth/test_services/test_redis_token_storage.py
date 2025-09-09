@@ -12,8 +12,6 @@ if getenv("TESTING") != "1":
 class RedisTokenStorageTestCase(TestCase):
     def test_generate_and_save_token(self) -> None:
         token = cache_token_storage.generate_and_save_token()
-        expected_exist = True
-        self.assertEqual(
-            expected_exist,
+        self.assertTrue(
             cache_token_storage.token_exists(token),
         )
