@@ -11,15 +11,7 @@ from fastapi.security import (
 
 from api.v1.auth.services.by_token import cache_token_storage
 from api.v1.auth.services.by_username_and_password import cache_user_storage
-
-UNSAFE_METHODS = frozenset(
-    {
-        "POST",
-        "PUT",
-        "PATCH",
-        "DELETE",
-    },
-)
+from services.utils import UNSAFE_METHODS
 
 log = logging.getLogger(__name__)
 

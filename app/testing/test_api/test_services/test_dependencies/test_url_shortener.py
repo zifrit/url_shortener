@@ -1,4 +1,4 @@
-from app.services.dependencies.other import UNSAFE_METHODS
+from services.utils import UNSAFE_METHODS
 
 
 class TestUnsafeMethods:
