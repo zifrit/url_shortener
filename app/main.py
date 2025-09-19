@@ -18,7 +18,7 @@ def read_root(
     name: str = "World",
 ) -> dict[str, str]:
     docs_url = request.url.replace(
-        path="/",
+        path="/docs",
         query="",
     )
     return {

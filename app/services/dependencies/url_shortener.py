@@ -6,15 +6,6 @@ from starlette import status
 from api.v1.url_shortener.crud import storage
 from schemas import ShortUrl
 
-UNSAFE_METHODS = frozenset(
-    {
-        "POST",
-        "PUT",
-        "PATCH",
-        "DELETE",
-    },
-)
-
 log = logging.getLogger(__name__)
 
 
