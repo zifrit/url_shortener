@@ -1,12 +1,6 @@
-from os import getenv
 from unittest import TestCase
 
-import pytest
-
 from api.v1.auth.services.by_token import cache_token_storage
-
-if getenv("TESTING") != "1":
-    pytest.exit("Environmental is not ready to start test")
 
 
 class RedisTokenStorageTestCase(TestCase):
