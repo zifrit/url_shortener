@@ -4,15 +4,14 @@ from os import getenv
 from typing import ClassVar
 from unittest import TestCase
 
+import pytest
 from pydantic import HttpUrl
 
 from api.v1.url_shortener.crud import storage
 from schemas import ShortUrl, ShortUrlCreate, ShortUrlParticularUpdate, ShortUrlUpdate
 
 if getenv("TESTING") != "1":
-    raise OSError(  # noqa: TRY003
-        "Environmental is not ready to start test",  # noqa: EM101
-    )
+    pytest.exit("Environmental is not ready to start test")
 
 
 def create_short_ulr() -> ShortUrl:

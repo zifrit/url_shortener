@@ -4,13 +4,13 @@ from os import getenv
 from typing import ClassVar
 from unittest import TestCase
 
+import pytest
+
 from api.v1.films.crud import film_storage
 from schemas import Films, FilmsCreate, FilmsParticularUpdate, FilmsUpdate
 
 if getenv("TESTING") != "1":
-    raise OSError(  # noqa: TRY003
-        "Environmental is not ready to start test",  # noqa: EM101
-    )
+    pytest.exit("Environmental is not ready to start test")
 
 
 def create_film() -> Films:
