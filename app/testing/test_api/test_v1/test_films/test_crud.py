@@ -3,7 +3,9 @@ import string
 from typing import ClassVar
 from unittest import TestCase
 
-from api.v1.films.crud import film_storage
+import pytest
+
+from api.v1.films.crud import AlreadyExistFilmError, film_storage
 from schemas import Films, FilmsCreate, FilmsParticularUpdate, FilmsUpdate
 
 
@@ -108,3 +110,15 @@ class FilmStorageGetTestCase(TestCase):
                     film,
                     db_film,
                 )
+
+
+def test_create_or_raise_if_exists() -> None:
+    existing_film = create_film()
+    film_create = FilmsCreate(**existing_film.model_dump())
+    with pytest.raises(
+        AlreadyExistFilmError,
+        match=film_create.slug,
+    ) as exc_ingo:
+        film_storage.create_or_raise_if_exists(film_create)
+
+    assert exc_ingo.value.args[0] == film_create.slug
