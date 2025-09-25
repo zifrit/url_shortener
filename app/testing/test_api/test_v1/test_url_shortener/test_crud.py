@@ -1,6 +1,3 @@
-import random
-import string
-from collections.abc import Generator
 from typing import ClassVar
 from unittest import TestCase
 
@@ -9,27 +6,12 @@ from pydantic import HttpUrl
 
 from api.v1.url_shortener.crud import AlreadyExistsShortUrlError, storage
 from schemas import ShortUrl, ShortUrlCreate, ShortUrlParticularUpdate, ShortUrlUpdate
-
-
-def create_short_ulr() -> ShortUrl:
-    short_url_in = ShortUrlCreate(
-        slug="".join(random.choices(string.ascii_letters, k=8)),
-        description="some-description",
-        target_url="https://example.com",
-    )
-    return storage.create(short_url_in)
-
-
-@pytest.fixture()
-def short_url() -> Generator[ShortUrl]:
-    short_url = create_short_ulr()
-    yield short_url
-    storage.delete(short_url)
+from testing.test_api.conftest import create_short_url
 
 
 class ShortUrlStorageUpdateTestCase(TestCase):
     def setUp(self) -> None:
-        self.short_url = create_short_ulr()
+        self.short_url = create_short_url()
 
     def tearDown(self) -> None:
         storage.delete(self.short_url)
@@ -87,7 +69,7 @@ class ShortUrlStorageGetTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.short_urls = [create_short_ulr() for _ in range(cls.SHORT_URLS_COUNT)]
+        cls.short_urls = [create_short_url() for _ in range(cls.SHORT_URLS_COUNT)]
 
     @classmethod
     def tearDownClass(cls) -> None:

@@ -1,6 +1,3 @@
-import random
-import string
-from collections.abc import Generator
 from typing import ClassVar
 from unittest import TestCase
 
@@ -8,23 +5,7 @@ import pytest
 
 from api.v1.films.crud import AlreadyExistFilmError, film_storage
 from schemas import Films, FilmsCreate, FilmsParticularUpdate, FilmsUpdate
-
-
-def create_film() -> Films:
-    film_in = FilmsCreate(
-        slug="".join(random.choices(string.ascii_letters, k=8)),
-        name="some-name",
-        description="some-description",
-        author="some-author",
-    )
-    return film_storage.create(film_in)
-
-
-@pytest.fixture()
-def film() -> Generator[Films]:
-    film = create_film()
-    yield film
-    film_storage.delete(film)
+from testing.test_api.conftest import create_film
 
 
 class FilmStorageUpdateTestCase(TestCase):
