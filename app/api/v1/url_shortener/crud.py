@@ -95,6 +95,7 @@ class ShortUrlStorage(BaseModel):
         raise AlreadyExistsShortUrlError(short_url.slug)
 
     def delete_by_slug(self, slug: str) -> None:
+        log.info("Deleted short url with %s slug", slug)
         redis_storage.hdel(config.REDIS_TOKENS_SHORT_URL_HASH_NAME, slug)
 
     def delete(self, short_url: ShortUrl) -> None:
