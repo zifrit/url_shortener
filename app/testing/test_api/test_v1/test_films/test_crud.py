@@ -5,12 +5,12 @@ import pytest
 
 from api.v1.films.crud import AlreadyExistFilmError, film_storage
 from schemas import Films, FilmsCreate, FilmsParticularUpdate, FilmsUpdate
-from testing.test_api.conftest import create_film
+from testing.test_api.conftest import create_films_random_slug
 
 
 class FilmStorageUpdateTestCase(TestCase):
     def setUp(self) -> None:
-        self.film = create_film()
+        self.film = create_films_random_slug()
 
     def tearDown(self) -> None:
         film_storage.delete(self.film)
@@ -75,7 +75,7 @@ class FilmStorageGetTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.films = [create_film() for _ in range(cls.FILMS_COUNT)]
+        cls.films = [create_films_random_slug() for _ in range(cls.FILMS_COUNT)]
 
     @classmethod
     def tearDownClass(cls) -> None:

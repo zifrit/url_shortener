@@ -6,12 +6,12 @@ from pydantic import HttpUrl
 
 from api.v1.url_shortener.crud import AlreadyExistsShortUrlError, storage
 from schemas import ShortUrl, ShortUrlCreate, ShortUrlParticularUpdate, ShortUrlUpdate
-from testing.test_api.conftest import create_short_url
+from testing.test_api.conftest import create_short_url_random_slug
 
 
 class ShortUrlStorageUpdateTestCase(TestCase):
     def setUp(self) -> None:
-        self.short_url = create_short_url()
+        self.short_url = create_short_url_random_slug()
 
     def tearDown(self) -> None:
         storage.delete(self.short_url)
@@ -69,7 +69,9 @@ class ShortUrlStorageGetTestCase(TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        cls.short_urls = [create_short_url() for _ in range(cls.SHORT_URLS_COUNT)]
+        cls.short_urls = [
+            create_short_url_random_slug() for _ in range(cls.SHORT_URLS_COUNT)
+        ]
 
     @classmethod
     def tearDownClass(cls) -> None:
