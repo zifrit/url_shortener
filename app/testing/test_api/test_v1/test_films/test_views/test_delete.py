@@ -5,17 +5,8 @@ from fastapi.testclient import TestClient
 
 from api.v1.films.crud import film_storage
 from main import app
-from schemas import Films, FilmsCreate
-
-
-def create_film(slug: str) -> Films:
-    film_in = FilmsCreate(
-        slug=slug,
-        name="some-name",
-        description="some-description",
-        author="some-author",
-    )
-    return film_storage.create(film_in)
+from schemas import Films
+from testing.test_api.conftest import create_films
 
 
 @pytest.fixture(
@@ -27,7 +18,7 @@ def create_film(slug: str) -> Films:
     ],
 )
 def film(request: SubRequest) -> Films:
-    return create_film(request.param)
+    return create_films(request.param)
 
 
 def test_delete_film(

@@ -31,34 +31,69 @@ def auth_client(client: TestClient, auth_token: str) -> TestClient:
     return client
 
 
-def create_short_url() -> ShortUrl:
-    short_url_in = ShortUrlCreate(
+def build_short_url_create(slug: str) -> ShortUrlCreate:
+    return ShortUrlCreate(
+        slug=slug,
+        description="some-description",
+        target_url="https://example.com",
+    )
+
+
+def build_short_url_random_slug() -> ShortUrlCreate:
+    return ShortUrlCreate(
         slug="".join(random.choices(string.ascii_letters, k=8)),  # noqa: S311
         description="some-description",
         target_url="https://example.com",
     )
+
+
+def create_short_url_random_slug() -> ShortUrl:
+    short_url_in = build_short_url_random_slug()
+    return storage.create(short_url_in)
+
+
+def create_short_url(slug: str) -> ShortUrl:
+    short_url_in = build_short_url_create(slug)
     return storage.create(short_url_in)
 
 
 @pytest.fixture()
 def short_url() -> Generator[ShortUrl]:
-    short_url = create_short_url()
+    short_url = create_short_url_random_slug()
     yield short_url
     storage.delete(short_url)
 
 
-def create_film() -> Films:
-    film_in = FilmsCreate(
+def build_movie_create_random_slug() -> FilmsCreate:
+    return FilmsCreate(
         slug="".join(random.choices(string.ascii_letters, k=8)),  # noqa: S311
         name="some-name",
         description="some-description",
         author="some-author",
     )
+
+
+def build_movie_create(slug: str) -> FilmsCreate:
+    return FilmsCreate(
+        slug=slug,
+        name="some-name",
+        description="some-description",
+        author="some-author",
+    )
+
+
+def create_films_random_slug() -> Films:
+    film_in = build_movie_create_random_slug()
+    return film_storage.create(film_in)
+
+
+def create_films(slug: str) -> Films:
+    film_in = build_movie_create(slug)
     return film_storage.create(film_in)
 
 
 @pytest.fixture()
 def film() -> Generator[Films]:
-    film = create_film()
+    film = create_films_random_slug()
     yield film
     film_storage.delete(film)
