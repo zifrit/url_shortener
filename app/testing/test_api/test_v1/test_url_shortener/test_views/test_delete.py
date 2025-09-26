@@ -1,0 +1,42 @@
+import pytest
+from _pytest.fixtures import SubRequest
+from fastapi import status
+from fastapi.testclient import TestClient
+
+from api.v1.url_shortener.crud import storage
+from main import app
+from schemas import ShortUrl, ShortUrlCreate
+
+
+def create_short_url(slug: str) -> ShortUrl:
+    short_url_in = ShortUrlCreate(
+        slug=slug,
+        description="some-description",
+        target_url="https://example.com",
+    )
+    return storage.create(short_url_in)
+
+
+@pytest.fixture(
+    params=[
+        "some-slug",
+        "slug",
+        pytest.param("som", id="min_length"),
+        pytest.param("somsomsoms", id="max_length"),
+    ],
+)
+def short_url(request: SubRequest) -> ShortUrl:
+    return create_short_url(request.param)
+
+
+def test_delete_short_url(
+    auth_client: TestClient,
+    short_url: ShortUrl,
+) -> None:
+    url = app.url_path_for(
+        "delete_short_url",
+        slug=short_url.slug,
+    )
+    auth_response = auth_client.delete(url)
+    assert auth_response.status_code == status.HTTP_204_NO_CONTENT
+    assert not storage.exists(short_url.slug)
