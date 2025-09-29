@@ -34,36 +34,40 @@ def auth_client(client: TestClient, auth_token: str) -> TestClient:
 def build_short_url_create(
     slug: str,
     description: str = "some-description",
+    target_url: str = "https://example.com",
 ) -> ShortUrlCreate:
     return ShortUrlCreate(
         slug=slug,
         description=description,
-        target_url="https://example.com",
+        target_url=target_url,
     )
 
 
 def build_short_url_random_slug(
     description: str = "some-description",
+    target_url: str = "https://example.com",
 ) -> ShortUrlCreate:
     return ShortUrlCreate(
         slug="".join(random.choices(string.ascii_letters, k=8)),  # noqa: S311
         description=description,
-        target_url="https://example.com",
+        target_url=target_url,
     )
 
 
 def create_short_url_random_slug(
     description: str = "some-description",
+    target_url: str = "https://example.com",
 ) -> ShortUrl:
-    short_url_in = build_short_url_random_slug(description)
+    short_url_in = build_short_url_random_slug(description, target_url)
     return storage.create(short_url_in)
 
 
 def create_short_url(
     slug: str,
     description: str = "some-description",
+    target_url: str = "https://example.com",
 ) -> ShortUrl:
-    short_url_in = build_short_url_create(slug, description)
+    short_url_in = build_short_url_create(slug, description, target_url)
     return storage.create(short_url_in)
 
 
@@ -76,39 +80,47 @@ def short_url() -> Generator[ShortUrl]:
 
 def build_movie_create_random_slug(
     description: str = "some-description",
+    name: str = "some-name",
+    author: str = "some-author",
 ) -> FilmsCreate:
     return FilmsCreate(
         slug="".join(random.choices(string.ascii_letters, k=8)),  # noqa: S311
-        name="some-name",
+        name=name,
         description=description,
-        author="some-author",
+        author=author,
     )
 
 
 def build_movie_create(
     slug: str,
     description: str = "some-description",
+    name: str = "some-name",
+    author: str = "some-author",
 ) -> FilmsCreate:
     return FilmsCreate(
         slug=slug,
-        name="some-name",
+        name=name,
         description=description,
-        author="some-author",
+        author=author,
     )
 
 
 def create_films_random_slug(
     description: str = "some-description",
+    name: str = "some-name",
+    author: str = "some-author",
 ) -> Films:
-    film_in = build_movie_create_random_slug(description)
+    film_in = build_movie_create_random_slug(description, name, author)
     return film_storage.create(film_in)
 
 
 def create_films(
     slug: str,
     description: str = "some-description",
+    name: str = "some-name",
+    author: str = "some-author",
 ) -> Films:
-    film_in = build_movie_create(slug, description)
+    film_in = build_movie_create(slug, description, name, author)
     return film_storage.create(film_in)
 
 
