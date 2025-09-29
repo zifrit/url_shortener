@@ -31,10 +31,13 @@ def auth_client(client: TestClient, auth_token: str) -> TestClient:
     return client
 
 
-def build_short_url_create(slug: str) -> ShortUrlCreate:
+def build_short_url_create(
+    slug: str,
+    description: str = "some-description",
+) -> ShortUrlCreate:
     return ShortUrlCreate(
         slug=slug,
-        description="some-description",
+        description=description,
         target_url="https://example.com",
     )
 
@@ -52,8 +55,11 @@ def create_short_url_random_slug() -> ShortUrl:
     return storage.create(short_url_in)
 
 
-def create_short_url(slug: str) -> ShortUrl:
-    short_url_in = build_short_url_create(slug)
+def create_short_url(
+    slug: str,
+    description: str = "some-description",
+) -> ShortUrl:
+    short_url_in = build_short_url_create(slug, description)
     return storage.create(short_url_in)
 
 
@@ -73,11 +79,14 @@ def build_movie_create_random_slug() -> FilmsCreate:
     )
 
 
-def build_movie_create(slug: str) -> FilmsCreate:
+def build_movie_create(
+    slug: str,
+    description: str = "some-description",
+) -> FilmsCreate:
     return FilmsCreate(
         slug=slug,
         name="some-name",
-        description="some-description",
+        description=description,
         author="some-author",
     )
 
@@ -87,8 +96,11 @@ def create_films_random_slug() -> Films:
     return film_storage.create(film_in)
 
 
-def create_films(slug: str) -> Films:
-    film_in = build_movie_create(slug)
+def create_films(
+    slug: str,
+    description: str = "some-description",
+) -> Films:
+    film_in = build_movie_create(slug, description)
     return film_storage.create(film_in)
 
 
