@@ -25,6 +25,8 @@ LOG_FORMAT: str = (
 #     "admin": "admin",
 # }
 
+DESCRIPTION_MAX_LENGTH = 200
+
 
 REDIS_HOST = "localhost"
 REDIS_PORT = int(getenv("REDIS_PORT", "0")) or 6379
