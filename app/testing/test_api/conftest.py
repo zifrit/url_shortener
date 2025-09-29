@@ -42,16 +42,20 @@ def build_short_url_create(
     )
 
 
-def build_short_url_random_slug() -> ShortUrlCreate:
+def build_short_url_random_slug(
+    description: str = "some-description",
+) -> ShortUrlCreate:
     return ShortUrlCreate(
         slug="".join(random.choices(string.ascii_letters, k=8)),  # noqa: S311
-        description="some-description",
+        description=description,
         target_url="https://example.com",
     )
 
 
-def create_short_url_random_slug() -> ShortUrl:
-    short_url_in = build_short_url_random_slug()
+def create_short_url_random_slug(
+    description: str = "some-description",
+) -> ShortUrl:
+    short_url_in = build_short_url_random_slug(description)
     return storage.create(short_url_in)
 
 
@@ -70,11 +74,13 @@ def short_url() -> Generator[ShortUrl]:
     storage.delete(short_url)
 
 
-def build_movie_create_random_slug() -> FilmsCreate:
+def build_movie_create_random_slug(
+    description: str = "some-description",
+) -> FilmsCreate:
     return FilmsCreate(
         slug="".join(random.choices(string.ascii_letters, k=8)),  # noqa: S311
         name="some-name",
-        description="some-description",
+        description=description,
         author="some-author",
     )
 
@@ -91,8 +97,10 @@ def build_movie_create(
     )
 
 
-def create_films_random_slug() -> Films:
-    film_in = build_movie_create_random_slug()
+def create_films_random_slug(
+    description: str = "some-description",
+) -> Films:
+    film_in = build_movie_create_random_slug(description)
     return film_storage.create(film_in)
 
 
