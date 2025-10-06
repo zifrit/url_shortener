@@ -11,6 +11,7 @@ from schemas import Films, FilmsUpdate
 from testing.test_api.conftest import create_films_random_slug
 
 
+@pytest.mark.apitest
 class TestUpdate:
 
     @pytest.fixture()

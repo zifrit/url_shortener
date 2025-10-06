@@ -12,6 +12,7 @@ from schemas import Films, FilmsCreate
 from testing.test_api.conftest import create_films_random_slug
 
 
+@pytest.mark.apitest
 def test_create_film(auth_client: TestClient) -> None:
     url = app.url_path_for("create_film")
     data = FilmsCreate(
@@ -26,6 +27,7 @@ def test_create_film(auth_client: TestClient) -> None:
     assert FilmsCreate(**response_data) == FilmsCreate(**data)
 
 
+@pytest.mark.apitest
 def test_create_film_already_exists(auth_client: TestClient, film: Films) -> None:
     url = app.url_path_for("create_film")
     data = FilmsCreate(**film.model_dump()).model_dump(mode="json")
@@ -39,6 +41,7 @@ def test_create_film_already_exists(auth_client: TestClient, film: Films) -> Non
     )
 
 
+@pytest.mark.apitest
 class TestCreateInvalid:
 
     @pytest.fixture(
