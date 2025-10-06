@@ -69,3 +69,10 @@ def particular_update_film_details(
     film_in: FilmsParticularUpdate,
 ) -> Films:
     return film_storage.particular_update(film=film, film_in=film_in)
+
+
+@router.post(
+    "/failed/",
+)
+def failed_api() -> None:
+    raise NotImplementedError
