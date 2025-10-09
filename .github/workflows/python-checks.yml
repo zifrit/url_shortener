@@ -1,0 +1,13 @@
+name: Python Checks 🐍
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder step in GH Actions
+        run: echo "Hello ${{ github.action }}"
