@@ -23,6 +23,11 @@ dev = [
 ]
 
 
+# uv settings
+[tool.uv]
+required-version = "~=0.9.1"
+
+
 # pytest tessings
 [tool.pytest.ini_options]
 minversion = "8.4"
