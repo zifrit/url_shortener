@@ -12,7 +12,7 @@ on:
       - .github/workflows/**
 
 jobs:
-  run-black:
+  run-checkes:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,9 +32,16 @@ jobs:
       - name: Install dependenci es
         run: uv sync --locked --all-extras --dev
 
-      - name: Run ruff check
+      - name: Run ruff --diff
         uses: astral-sh/ruff-action@v3
         with:
+          args: 'check --diff'
+          version-file: 'pyproject.toml'
+
+      - name: Run ruff
+        uses: astral-sh/ruff-action@v3
+        with:
+          args: 'check '
           version-file: 'pyproject.toml'
 
       - name: Run  mypy
