@@ -21,7 +21,7 @@ def test_create_film(
     caplog.set_level(logging.INFO)
     url = app.url_path_for("create_film")
     data = FilmsCreate(
-        slug="".join(random.choices(string.ascii_letters, k=8)),  # noqa: S311
+        slug="".join(random.choices(string.ascii_letters, k=8)),
         name="some-name",
         description="some-description",
         author="some-author",

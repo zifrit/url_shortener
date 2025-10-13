@@ -48,7 +48,7 @@ def build_short_url_random_slug(
     target_url: str = "https://example.com",
 ) -> ShortUrlCreate:
     return ShortUrlCreate(
-        slug="".join(random.choices(string.ascii_letters, k=8)),  # noqa: S311
+        slug="".join(random.choices(string.ascii_letters, k=8)),
         description=description,
         target_url=target_url,
     )
@@ -84,7 +84,7 @@ def build_movie_create_random_slug(
     author: str = "some-author",
 ) -> FilmsCreate:
     return FilmsCreate(
-        slug="".join(random.choices(string.ascii_letters, k=8)),  # noqa: S311
+        slug="".join(random.choices(string.ascii_letters, k=8)),
         name=name,
         description=description,
         author=author,

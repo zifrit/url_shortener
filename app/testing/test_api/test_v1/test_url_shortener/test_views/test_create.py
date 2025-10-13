@@ -15,7 +15,7 @@ from testing.test_api.conftest import create_short_url_random_slug
 def test_create_short_ulr(auth_client: TestClient) -> None:
     url = app.url_path_for("create_short_url")
     data = ShortUrlCreate(
-        slug="".join(random.choices(string.ascii_letters, k=10)),  # noqa: S311
+        slug="".join(random.choices(string.ascii_letters, k=10)),
         description="some-description",
         target_url="https://example.com",
     ).model_dump(mode="json")
