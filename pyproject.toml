@@ -163,9 +163,9 @@ unfixable = []
 "stuff.py" = [
     "T20", # flake8-print (T20)
 ]
-"**/test_*.py" = [
-    "S311", # S311 Standard pseudo-random generators are not suitable for cryptographic purposes
-]
+#"**/test_*.py" = [
+#    "S311", # S311 Standard pseudo-random generators are not suitable for cryptographic purposes
+#]
 
 #"**/conftest.py" = [
 #    "S311", # S311 Standard pseudo-random generators are not suitable for cryptographic purposes
