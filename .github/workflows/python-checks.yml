@@ -26,15 +26,16 @@ jobs:
       - name: Run Black
         run: black --check --diff ./
 
-  run-mypy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
       - name: Install UV
         uses: astral-sh/setup-uv@v5
 
-      - name: Install dependencies
+      - name: Install dependenci es
         run: uv sync --locked --all-extras --dev
+
+      - name: Run  ruff
+        run: astral-sh/ruff-action@v3
+        with:
+          version-file: 'pyproject.toml'
+
       - name: Run  mypy
         run: uv run mypy app
