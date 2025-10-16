@@ -46,3 +46,10 @@ jobs:
 
       - name: Run  mypy
         run: uv run mypy app
+
+  run-tests:
+    runs-on: ubuntu-latest
+    needs:
+      - run-checks
+    steps:
+      - run: echo "Running Tests"
