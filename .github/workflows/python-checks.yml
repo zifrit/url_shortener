@@ -81,7 +81,6 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          dry-run: ${{ env.ACT }}
-          fail-ci-if-error: 'true'
-
-
+          files: coverage.xml
+          dry_run: ${{ env.ACT }}
+          fail_ci_if_error: 'true'
