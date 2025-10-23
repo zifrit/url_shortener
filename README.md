@@ -7,7 +7,7 @@
 [![Dependency: uv](https://img.shields.io/badge/dependencies-uv-4B8BBE?logo=python&style=for-the-badge)](https://github.com/astral-sh/uv)
  
 [![Python Checks 🐍](https://github.com/zifrit/url_shortener/actions/workflows/python-checks.yml/badge.svg?branch=master)](https://github.com/zifrit/url_shortener/actions/workflows/python-checks.yml)
-[![codecov](https://codecov.io/gh/zifrit/url_shortener/branch/main/graph/badge.svg)](https://codecov.io/gh/zifrit/url_shortener)
+[![codecov](https://codecov.io/gh/zifrit/url_shortener/branch/master/graph/badge.svg)](https://codecov.io/gh/zifrit/url_shortener)
 
 
 ## Develop
