@@ -1,8 +1,8 @@
 import logging
 from os import getenv
 from pathlib import Path
-from pydantic_settings import BaseSettings
-from pydantic import BaseModel
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import BaseModel, model_validator
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,11 +39,20 @@ class RedisConnectionConfig(BaseModel):
 
 
 class RedisDBConfig(BaseModel):
-    db: int = REDIS_DB
-    db_tokens: int = REDIS_DB_TOKENS
-    db_users: int = REDIS_DB_USERS
-    db_short_url: int = REDIS_DB_SHORT_URL
-    db_films: int = REDIS_DB_FILMS
+    db: int = 0
+    db_tokens: int = 1
+    db_users: int = 2
+    db_short_url: int = 3
+    db_films: int = 4
+
+    @model_validator(mode="after")
+    def check_not_duplicated(self) -> "RedisDBConfig":
+        vals = self.model_dump().values()
+        unic_val = set(vals)
+        list_val = list(vals)
+        if len(unic_val) != len(list_val):
+            raise ValueError("Duplicated values: {}".format(list_val))
+        return self
 
 
 class RedisTokensConfig(BaseModel):
@@ -59,8 +68,13 @@ class RedisConfig(BaseSettings):
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(
+        cache_strings=False,
+        cli_parse_args=True,
+    )
     logging: LoggingConfig = LoggingConfig()
     redis: RedisConfig = RedisConfig()
 
 
 settings = Settings()
+print(settings.redis.db)
