@@ -34,11 +34,11 @@ class AlreadyExistFilmError(FilmError):
 
 class FilmStorage(BaseModel):
     slug_to_item: dict[str, Films] = {}
+    hash_name: str
 
-    @classmethod
-    def save_to_redis_storage(cls, film: Films) -> None:
+    def save_to_redis_storage(self, film: Films) -> None:
         redis_storage.hset(
-            name=config.settings.redis.token.film,
+            name=self.hash_name,
             key=film.slug,
             value=film.model_dump_json(),
         )
@@ -47,7 +47,7 @@ class FilmStorage(BaseModel):
         datas = cast(
             list[str],
             redis_storage.hvals(
-                name=config.settings.redis.token.film,
+                name=self.hash_name,
             ),
         )
         return [Films.model_validate_json(film) for film in datas] if datas else []
@@ -56,7 +56,7 @@ class FilmStorage(BaseModel):
         data = cast(
             str,
             redis_storage.hget(
-                name=config.settings.redis.token.film,
+                name=self.hash_name,
                 key=slug,
             ),
         )
@@ -72,7 +72,7 @@ class FilmStorage(BaseModel):
         return cast(
             bool,
             redis_storage.hexists(
-                name=config.settings.redis.token.film,
+                name=self.hash_name,
                 key=slug,
             ),
         )
@@ -86,7 +86,7 @@ class FilmStorage(BaseModel):
         raise AlreadyExistFilmError(film.slug)
 
     def delete_by_slug(self, slug: str) -> None:
-        redis_storage.hdel(config.settings.redis.token.film, slug)
+        redis_storage.hdel(self.hash_name, slug)
 
     def delete(self, film: Films) -> None:
         self.delete_by_slug(film.slug)
@@ -104,4 +104,4 @@ class FilmStorage(BaseModel):
         return film
 
 
-film_storage = FilmStorage()
+film_storage = FilmStorage(hash_name=config.settings.redis.token.film)
