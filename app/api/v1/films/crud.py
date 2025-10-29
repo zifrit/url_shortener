@@ -1,4 +1,4 @@
-__all__ = ["film_storage"]
+__all__ = ["film_storage", "AlreadyExistFilmError"]
 
 import logging
 from typing import cast
@@ -13,9 +13,9 @@ log = logging.getLogger(__name__)
 
 
 redis_storage = Redis(
-    port=config.REDIS_PORT,
-    host=config.REDIS_HOST,
-    db=config.REDIS_DB_FILMS,
+    port=config.settings.redis.connection.port,
+    host=config.settings.redis.connection.host,
+    db=config.settings.redis.db.db_films,
     decode_responses=True,
 )
 
@@ -38,7 +38,7 @@ class FilmStorage(BaseModel):
     @classmethod
     def save_to_redis_storage(cls, film: Films) -> None:
         redis_storage.hset(
-            name=config.REDIS_TOKENS_FILMS_HASH_NAME,
+            name=config.settings.redis.token.film,
             key=film.slug,
             value=film.model_dump_json(),
         )
@@ -47,7 +47,7 @@ class FilmStorage(BaseModel):
         datas = cast(
             list[str],
             redis_storage.hvals(
-                name=config.REDIS_TOKENS_FILMS_HASH_NAME,
+                name=config.settings.redis.token.film,
             ),
         )
         return [Films.model_validate_json(film) for film in datas] if datas else []
@@ -56,7 +56,7 @@ class FilmStorage(BaseModel):
         data = cast(
             str,
             redis_storage.hget(
-                name=config.REDIS_TOKENS_FILMS_HASH_NAME,
+                name=config.settings.redis.token.film,
                 key=slug,
             ),
         )
@@ -72,7 +72,7 @@ class FilmStorage(BaseModel):
         return cast(
             bool,
             redis_storage.hexists(
-                name=config.REDIS_TOKENS_FILMS_HASH_NAME,
+                name=config.settings.redis.token.film,
                 key=slug,
             ),
         )
@@ -86,7 +86,7 @@ class FilmStorage(BaseModel):
         raise AlreadyExistFilmError(film.slug)
 
     def delete_by_slug(self, slug: str) -> None:
-        redis_storage.hdel(config.REDIS_TOKENS_FILMS_HASH_NAME, slug)
+        redis_storage.hdel(config.settings.redis.token.film, slug)
 
     def delete(self, film: Films) -> None:
         self.delete_by_slug(film.slug)

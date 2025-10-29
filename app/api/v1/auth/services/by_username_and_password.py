@@ -42,9 +42,9 @@ class RedisUserstorage(ABCUsersStorage):
 
     def __init__(
         self,
-        host: str = config.REDIS_HOST,
-        port: int = config.REDIS_PORT,
-        db: int = config.REDIS_DB_USERS,
+        host: str = config.settings.redis.connection.host,
+        port: int = config.settings.redis.connection.port,
+        db: int = config.settings.redis.db.db_users,
     ) -> None:
         self.redis_client = Redis(
             host=host,

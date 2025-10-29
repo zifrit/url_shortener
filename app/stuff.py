@@ -3,9 +3,9 @@ from redis import Redis
 from core import config
 
 cache = Redis(
-    host=config.REDIS_HOST,
-    port=config.REDIS_PORT,
-    db=config.REDIS_DB,
+    host=config.settings.redis.connection.host,
+    port=config.settings.redis.connection.port,
+    db=config.settings.redis.db.db,
 )
 
 

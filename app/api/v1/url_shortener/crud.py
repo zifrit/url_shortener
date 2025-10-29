@@ -1,4 +1,4 @@
-__all__ = ["storage"]
+__all__ = ["storage", "AlreadyExistsShortUrlError"]
 
 import logging
 from typing import cast
@@ -18,9 +18,9 @@ log = logging.getLogger(__name__)
 
 
 redis_storage = Redis(
-    port=config.REDIS_PORT,
-    host=config.REDIS_HOST,
-    db=config.REDIS_DB_SHORT_URL,
+    port=config.settings.redis.connection.port,
+    host=config.settings.redis.connection.host,
+    db=config.settings.redis.db.db_short_url,
     decode_responses=True,
 )
 
@@ -43,7 +43,7 @@ class ShortUrlStorage(BaseModel):
     @classmethod
     def save_to_redis_storage(cls, short_url: ShortUrl) -> None:
         redis_storage.hset(
-            name=config.REDIS_TOKENS_SHORT_URL_HASH_NAME,
+            name=config.settings.redis.token.short_url,
             key=short_url.slug,
             value=short_url.model_dump_json(),
         )
@@ -52,7 +52,7 @@ class ShortUrlStorage(BaseModel):
         datas = cast(
             list[str],
             redis_storage.hvals(
-                name=config.REDIS_TOKENS_SHORT_URL_HASH_NAME,
+                name=config.settings.redis.token.short_url,
             ),
         )
         return (
@@ -65,7 +65,7 @@ class ShortUrlStorage(BaseModel):
         data = cast(
             str,
             redis_storage.hget(
-                name=config.REDIS_TOKENS_SHORT_URL_HASH_NAME,
+                name=config.settings.redis.token.short_url,
                 key=slug,
             ),
         )
@@ -81,7 +81,7 @@ class ShortUrlStorage(BaseModel):
         return cast(
             bool,
             redis_storage.hexists(
-                name=config.REDIS_TOKENS_SHORT_URL_HASH_NAME,
+                name=config.settings.redis.token.short_url,
                 key=slug,
             ),
         )
@@ -96,7 +96,7 @@ class ShortUrlStorage(BaseModel):
 
     def delete_by_slug(self, slug: str) -> None:
         log.info("Deleted short url with %s slug", slug)
-        redis_storage.hdel(config.REDIS_TOKENS_SHORT_URL_HASH_NAME, slug)
+        redis_storage.hdel(config.settings.redis.token.short_url, slug)
 
     def delete(self, short_url: ShortUrl) -> None:
         self.delete_by_slug(short_url.slug)

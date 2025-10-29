@@ -56,10 +56,10 @@ class RedisTokenStorage(ABCTokenRedisStorage):
 
     def __init__(
         self,
-        host: str = config.REDIS_HOST,
-        port: int = config.REDIS_PORT,
-        db: int = config.REDIS_DB_TOKENS,
-        token_set_name: str = config.REDIS_TOKENS_SET_NAME,
+        host: str = config.settings.redis.connection.host,
+        port: int = config.settings.redis.connection.port,
+        db: int = config.settings.redis.db.db,
+        token_set_name: str = config.settings.redis.token.set_name,
     ) -> None:
         self.redis_client = Redis(
             host=host,
