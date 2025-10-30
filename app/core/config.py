@@ -1,6 +1,8 @@
 import logging
 from os import getenv
 from pathlib import Path
+from typing import Literal
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import BaseModel, model_validator
 
@@ -28,9 +30,19 @@ REDIS_TOKENS_FILMS_HASH_NAME = "films"
 
 
 class LoggingConfig(BaseModel):
-    log_level: int = logging.INFO
+    log_level_name: Literal[
+        "DEBUG",
+        "INFO",
+        "WARNING",
+        "ERROR",
+        "CRITICAL",
+    ] = "INFO"
     log_format: str = LOG_FORMAT
     date_format: str = "%Y-%m-%d %H:%M:%S"
+
+    @property
+    def log_level(self) -> int:
+        return logging.getLevelNamesMapping()[self.log_level_name]
 
 
 class RedisConnectionConfig(BaseModel):
@@ -70,7 +82,9 @@ class RedisConfig(BaseSettings):
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         cache_strings=False,
-        cli_parse_args=True,
+        env_file=BASE_DIR / ".env",
+        env_nested_delimiter="__",
+        env_prefix="ENV__",
     )
     logging: LoggingConfig = LoggingConfig()
     redis: RedisConfig = RedisConfig()
@@ -78,3 +92,4 @@ class Settings(BaseSettings):
 
 settings = Settings()
 print(settings.redis.db)
+print(settings.logging)
