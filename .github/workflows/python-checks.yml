@@ -75,8 +75,8 @@ jobs:
         run: uv run pytest app --cov=app --cov-report=xml:coverage.xml
         env:
           TESTING: 1
-          ENV__REDIS__CONNECTION_HOST: redis
-          ENV__REDIS__CONNECTION_PORT: 6379
+          ENV__REDIS__CONNECTION__HOST: redis
+          ENV__REDIS__CONNECTION__PORT: 6379
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
         with:
