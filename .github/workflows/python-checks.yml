@@ -49,7 +49,7 @@ jobs:
 
   run-tests:
     runs-on: ubuntu-latest
-    container: python:3.13-alpine
+    container: python:3.13-bookworm
     needs:
       - run-checks
     services:
