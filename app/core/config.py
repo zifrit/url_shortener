@@ -1,5 +1,4 @@
 import logging
-from os import getenv
 from pathlib import Path
 from typing import Literal
 
@@ -51,7 +50,7 @@ class RedisDBConfig(BaseModel):
         unic_val = set(vals)
         list_val = list(vals)
         if len(unic_val) != len(list_val):
-            raise ValueError(f"Duplicated values: {list_val}")
+            raise ValueError("Duplicated values: " + ", ".join(list_val))
         return self
 
 
@@ -82,5 +81,3 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-print(settings.redis.db)
-print(settings.logging)
