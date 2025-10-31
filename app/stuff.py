@@ -15,6 +15,7 @@ def main() -> None:
     print(cache.keys())
     print(cache.get("foo"))
     print(cache.get("bob"))
+    print(cache.get("bob"))
 
 
 if __name__ == "__main__":
