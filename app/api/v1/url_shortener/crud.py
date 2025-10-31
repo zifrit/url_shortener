@@ -1,4 +1,4 @@
-__all__ = ["storage", "AlreadyExistsShortUrlError"]
+__all__ = ["AlreadyExistsShortUrlError", "storage"]
 
 import logging
 from typing import cast

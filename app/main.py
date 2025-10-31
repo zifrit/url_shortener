@@ -5,7 +5,7 @@ from fastapi import FastAPI
 
 from api import router as api_router
 from api.main_views import router as main_router
-from core.config import LOG_FORMAT, LOG_LEVEL, settings
+from core.config import settings
 from lifespan import lifespan
 
 logging.basicConfig(
