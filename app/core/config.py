@@ -3,8 +3,8 @@ from os import getenv
 from pathlib import Path
 from typing import Literal
 
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import BaseModel, model_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -15,18 +15,6 @@ LOG_FORMAT: str = (
 )
 
 DESCRIPTION_MAX_LENGTH = 200
-
-REDIS_HOST = getenv("REDIS_HOST", "localhost")
-REDIS_PORT = int(getenv("REDIS_PORT", "0")) or 6379
-REDIS_DB = 0
-REDIS_DB_TOKENS = 1
-REDIS_DB_USERS = 2
-REDIS_DB_SHORT_URL = 3
-REDIS_DB_FILMS = 4
-
-REDIS_TOKENS_SET_NAME = "TOKENS_SET"
-REDIS_TOKENS_SHORT_URL_HASH_NAME = "short-url"
-REDIS_TOKENS_FILMS_HASH_NAME = "films"
 
 
 class LoggingConfig(BaseModel):
@@ -63,14 +51,14 @@ class RedisDBConfig(BaseModel):
         unic_val = set(vals)
         list_val = list(vals)
         if len(unic_val) != len(list_val):
-            raise ValueError("Duplicated values: {}".format(list_val))
+            raise ValueError(f"Duplicated values: {list_val}")
         return self
 
 
 class RedisTokensConfig(BaseModel):
-    set_name: str = REDIS_TOKENS_SET_NAME
-    short_url: str = REDIS_TOKENS_SHORT_URL_HASH_NAME
-    film: str = REDIS_TOKENS_FILMS_HASH_NAME
+    set_name: str = "TOKENS_SET"
+    short_url: str = "short-url"
+    film: str = "films"
 
 
 class RedisConfig(BaseSettings):
@@ -82,7 +70,10 @@ class RedisConfig(BaseSettings):
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         cache_strings=False,
-        env_file=BASE_DIR / ".env",
+        env_file=(
+            BASE_DIR / ".env.template",
+            BASE_DIR / ".env",
+        ),
         env_nested_delimiter="__",
         env_prefix="ENV__",
     )
