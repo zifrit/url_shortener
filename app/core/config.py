@@ -81,7 +81,7 @@ class Settings(BaseSettings):
         env_prefix="ENV__",
         yaml_file=(
             BASE_DIR / "config.default.yaml",
-            "",
+            BASE_DIR / "config.local.yaml",
         ),
         yaml_config_section="app_config",
     )
