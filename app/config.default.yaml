@@ -1,0 +1,17 @@
+app_config:
+  redis:
+    db:
+      db4: 1
+      db_tokens4: 2
+      db_users4: 3
+      db_short_url4: 4
+      db_films4: 5
+
+    connection:
+      host: 'localhost'
+      port: 6399
+
+    token:
+      set_name: 'TOKENS_SET1'
+      short_url: 'short-url1'
+      film: 'films1'
