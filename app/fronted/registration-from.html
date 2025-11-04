@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Register</title>
+</head>
+<body>
+<form method="Get">
+  <h1>Register</h1>
+  <div>
+    <label for="first-name">First name</label>
+    <input type="text" name="first_name" id="first-name" placeholder="First Name">
+    <label for="last-name">Last name</label>
+     <input type="text" name="last_name" id="last-name" placeholder="Last Name">
+  </div>
+  <div>
+    <label for="username">Username</label>
+    <input type="text" name="username" id="username" placeholder="Enter Username" required>
+  </div>
+  <div>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" placeholder="Enter Password" required>
+  </div>
+  <div>
+    <label for="email">Email address</label><input type="email" name="email" id="email" placeholder="Email address">
+  </div>
+  <div>
+    <label for="male">Male</label>
+    <input type="radio" value="male" name="gender" id="male">
+    <label for="female">Female </label>
+    <input type="radio" value="female" name="gender" id="female">
+  </div>
+  <div>
+    <label for="accept-tems">i accept terms and conditions</label>
+    <input type="checkbox" name="terms" id="accept-tems">
+  </div>
+  <div>
+    <label for="newsletter">Sub to newsletters</label>
+    <input type="checkbox" name="newsletter" id="newsletter">
+  </div>
+  <div>
+    <label for="city">City
+      <select name="city" id="city">
+        <option value="moscow">Moscow</option>
+        <option value="spb">Saint Petersburg</option>
+        <option value="kazan">Kazan</option>
+        <option value="novosibirsk">Novosibirsk</option>
+        <option value="yekaterinburg">Yekaterinburg</option>
+      </select>
+    </label>
+  </div>
+  <div>
+    <label for="address">Addredd</label>
+    <input type="text" name="address" id="address" placeholder="Address">
+  </div>
+    <input type="submit" value="Register">
+</form>
+</body>
+</html>
