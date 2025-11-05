@@ -12,7 +12,7 @@
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 20px;
-        text-align: center;
+        text-align: left;
     }
     header {
       background-color: #007acc;
@@ -25,6 +25,21 @@
       margin: 0;
       padding: 2px;
     }
+    img.avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .quotes {
+      background-color: #007acc;
+      margin: 5px;
+    }
+    .quote {
+      font-style: italic;
+      border-left: 5px solid #6a9955;
+      padding-left: 10px;
+    }
   </style>
 </head>
 <body>
@@ -32,6 +47,13 @@
   <header>
     <h1>Register</h1>
   </header>
+
+    <img
+    class="avatar shadow"
+    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoturfY063myJD40nLwVnNoRJLQ8n_-jp3Dg&s"
+    alt="cat photo"
+  >
+
   <div>
     <label for="first-name">First name</label>
     <input type="text" name="first_name" id="first-name" placeholder="First Name">
@@ -78,6 +100,26 @@
     <label for="address">Addredd</label>
     <input type="text" name="address" id="address" placeholder="Address">
   </div>
+  <div>
+    <h2 class="quotes">Quote</h2>
+    <p class="quote">
+ "The only way to do great work is to love what you do." - Steve Jobs
+    </p>
+    <p class="quote"> "The only way to do great work is to love what you do." - Steve Jobs</p>
+    <p class="quote">"The purpose of our lives is to be happy." - Dalai Lama</p>
+  </div>
+
+    <div >
+      <h2 class="quotes">My favourite quotes</h2>
+
+      <p class="quote">
+        "The only way to do great work is to love what you do." - Steve Jobs
+      </p>
+
+      <p class="quote">" "The only way to do great work is to love what you do." - Steve Jobs</p>
+
+      <p class="quote">"The purpose of our lives is to be happy." - Dalai Lama</p>
+    </div>
     <input type="submit" value="Register">
 </form>
 </body>
