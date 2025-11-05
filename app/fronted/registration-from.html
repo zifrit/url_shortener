@@ -6,10 +6,32 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Register</title>
+  <style>
+    body {
+        background-color: wheat;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        text-align: center;
+    }
+    header {
+      background-color: #007acc;
+      padding: 1px;
+      margin: 0 0 10px 0;
+      border-radius: 10px;
+      box-shadow: 5px 5px grey;
+    }
+    header > h1 {
+      margin: 0;
+      padding: 2px;
+    }
+  </style>
 </head>
 <body>
 <form method="Get">
-  <h1>Register</h1>
+  <header>
+    <h1>Register</h1>
+  </header>
   <div>
     <label for="first-name">First name</label>
     <input type="text" name="first_name" id="first-name" placeholder="First Name">
