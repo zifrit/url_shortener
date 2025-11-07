@@ -120,7 +120,24 @@
 
       <p class="quote">"The purpose of our lives is to be happy." - Dalai Lama</p>
     </div>
+
+   <div>
+   <p>my social media</p>
+     <ul>
+       <li><a href="#">Github</a></li>
+       <li><a href="#">Telegram</a></li>
+       <li><a href="#">YouTube</a></li>
+     </ul>
+ </div>
     <input type="submit" value="Register">
 </form>
+<script>
+  const links = document.querySelectorAll('.quote')
+  let count = 0
+  links.forEach(link => {
+    count += 1
+    link.innerText = count + '. ' + link.innerText
+  })
+</script>
 </body>
 </html>
