@@ -129,6 +129,15 @@
        <li><a href="#">YouTube</a></li>
      </ul>
  </div>
+
+  <div>
+    <h2>Clicker</h2>
+    <div>
+      <p>Count of clicks: <span id="countOfClicks">0</span></p>
+      <button type="button" onclick="clickedBt()">click</button>
+      <button type="button" onclick="resetCountClicks()">reset</button>
+    </div>
+  </div>
     <input type="submit" value="Register">
 </form>
 
@@ -145,6 +154,17 @@
   })
   const yearSpan = document.getElementById('year')
   yearSpan.innerText = new Date().getFullYear().toString()
+
+  let countClicks = 0
+  textCountOfClicks = document.getElementById('countOfClicks')
+  function clickedBt () {
+      countClicks += 1
+      textCountOfClicks.innerText = countClicks.toString()
+  }
+  function resetCountClicks () {
+      countClicks = 0
+      textCountOfClicks.innerText = countClicks.toString()
+  }
 </script>
 </body>
 </html>
