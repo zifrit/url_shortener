@@ -131,6 +131,11 @@
  </div>
     <input type="submit" value="Register">
 </form>
+
+<footer>
+  &copy; Mukhtar <span id ='year'>2024</span>
+</footer>
+
 <script>
   const links = document.querySelectorAll('.quote')
   let count = 0
@@ -138,6 +143,8 @@
     count += 1
     link.innerText = count + '. ' + link.innerText
   })
+  const yearSpan = document.getElementById('year')
+  yearSpan.innerText = new Date().getFullYear().toString()
 </script>
 </body>
 </html>
