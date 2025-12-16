@@ -1,59 +1,153 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Site about me</title>
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+        crossorigin="anonymous">
+  <style>
+      img.avatar {
+          width: 150px;
+          height: 150px;
+          object-fit: cover;
+      }
+  </style>
 </head>
 <body>
- <h1>
-   Shop order
- </h1>
- <h2>
-  yandex <i>shop</i>
- </h2>
- <ul>
-  <li>1kg <em>apples</em></li>
-  <li>2 breads</li>
-  <li>1.5kg bananas</li>
- </ul>
- <h3>IF not found some positions</h3>
- <ol>
-   <li>one</li>
-   <li>two</li>
-   <li>three</li>
- </ol>
- <ol>
-   <li>
-     <ul>
-       <li>1.5kg sping apples</li>
-       <li>2kg summer apples</li>
-       <li>not buy</li>
-     </ul>
-   </li>
-   <li>
-     <ul>
-       <li>bread type 1</li>
-       <li>bread type 2</li>
-       <li>not buy</li>
-     </ul>
-   </li>
-   <li>
-     <ul>
-       <li>1kg Brazilian bananas</li>
-       <li>3kr Africa bananas</li>
-       <li>bot buy</li>
-     </ul>
-   </li>
- </ol>
- <div>
-   <p>my social media</p>
-     <ul>
-       <li><a href="#">Github</a></li>
-       <li><a href="#">Telegram</a></li>
-       <li><a href="#">YouTube</a></li>
-     </ul>
- </div>
+<div class="container">
+  <form method="Get">
+    <header>
+      <h1 class="">Register</h1>
+    </header>
 
+    <img
+      class="avatar shadow rounded-circle"
+      src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoturfY063myJD40nLwVnNoRJLQ8n_-jp3Dg&s"
+      alt="cat photo"
+    >
+
+    <div>
+      <label for="first-name">First name</label>
+      <input type="text" name="first_name" id="first-name" placeholder="First Name">
+      <label for="last-name">Last name</label>
+      <input type="text" name="last_name" id="last-name" placeholder="Last Name">
+    </div>
+    <div>
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username" placeholder="Enter Username" required>
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" placeholder="Enter Password" required>
+    </div>
+    <div>
+      <label for="email">Email address</label><input type="email" name="email" id="email" placeholder="Email address">
+    </div>
+    <div>
+      <label for="male">Male</label>
+      <input type="radio" value="male" name="gender" id="male">
+      <label for="female">Female </label>
+      <input type="radio" value="female" name="gender" id="female">
+    </div>
+    <div>
+      <label for="accept-tems">i accept terms and conditions</label>
+      <input type="checkbox" name="terms" id="accept-tems">
+    </div>
+    <div>
+      <label for="newsletter">Sub to newsletters</label>
+      <input type="checkbox" name="newsletter" id="newsletter">
+    </div>
+    <div>
+      <label for="city">City
+        <select name="city" id="city">
+          <option value="moscow">Moscow</option>
+          <option value="spb">Saint Petersburg</option>
+          <option value="kazan">Kazan</option>
+          <option value="novosibirsk">Novosibirsk</option>
+          <option value="yekaterinburg">Yekaterinburg</option>
+        </select>
+      </label>
+    </div>
+    <div>
+      <label for="address">Addredd</label>
+      <input type="text" name="address" id="address" placeholder="Address">
+    </div>
+    <div>
+      <h3>My favorite</h3>
+      <ul class="list-group list-group-numbered">
+        <li class="list-group-item">Slq</li>
+        <li class="list-group-item">Python</li>
+        <li class="list-group-item">Numpy</li>
+      </ul>
+    </div>
+    <div>
+      <figure class="text-center">
+        <blockquote class="blockqoute">
+          <p>The purpose of our lives is to be happy.</p>
+        </blockquote>
+        <figcaption class="blockqoute-footer">
+          - Dalai Lama
+        </figcaption>
+      </figure>
+
+      <figure class="text-center">
+        <blockquote class="blockqoute">
+          <p>The only way to do great work is to love what you do.</p>
+        </blockquote>
+        <figcaption class="blockqoute-footer">
+          - Steve Jobs
+        </figcaption>
+      </figure>
+
+    </div>
+
+    <div>
+      <p>my social media</p>
+      <ul>
+        <li><a href="#">Github</a></li>
+        <li><a href="#">Telegram</a></li>
+        <li><a href="#">YouTube</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2>Clicker</h2>
+      <div>
+        <p class="my-4">Count of clicks: <span class="badge text-bg-danger" id="countOfClicks">0</span></p>
+        <button class="btn btn-primary" type="button" onclick="clickedBt()">click</button>
+        <button class="btn btn-warning" type="button" onclick="resetCountClicks()">reset</button>
+      </div>
+    </div>
+    <input class="btn btn-success my-1" type="submit" value="Register">
+  </form>
+
+  <footer>
+    &copy; Mukhtar <span id='year'>2024</span>
+  </footer>
+
+  <script>
+      const yearSpan = document.getElementById('year')
+      yearSpan.innerText = new Date().getFullYear().toString()
+
+      let countClicks = 0
+      textCountOfClicks = document.getElementById('countOfClicks')
+
+      function clickedBt() {
+          countClicks += 1
+          textCountOfClicks.innerText = countClicks.toString()
+      }
+
+      function resetCountClicks() {
+          countClicks = 0
+          textCountOfClicks.innerText = countClicks.toString()
+      }
+  </script>
+</div>
 </body>
+
 </html>
