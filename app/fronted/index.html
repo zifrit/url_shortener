@@ -80,9 +80,15 @@
     <div>
       <h3>My favorite</h3>
       <ul class="list-group list-group-numbered">
-        <li class="list-group-item">Slq</li>
-        <li class="list-group-item">Python</li>
-        <li class="list-group-item">Numpy</li>
+        <li class="list-group-item" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Язык запросов в базу данных">Slq</li>
+        <li class="list-group-item" data-bs-toggle="popover" data-bs-placement="right"
+            role="button"
+        data-bs-custom-class="custom-popover"
+        data-bs-title="Пользовательское всплывающее окно"
+        data-bs-content="Это всплывающее окно оформлено с помощью переменных CSS." >Python</li>
+        <li class="list-group-item">
+          <a tabindex="0" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-title="Отклоняемое всплывающее окно" data-bs-content="А вот и потрясающий контент. Это очень увлекательно. Верно?">Numpy</a>
+        </li>
       </ul>
     </div>
     <div>
@@ -129,25 +135,33 @@
   <footer>
     &copy; Mukhtar <span id='year'>2024</span>
   </footer>
-
-  <script>
-      const yearSpan = document.getElementById('year')
-      yearSpan.innerText = new Date().getFullYear().toString()
-
-      let countClicks = 0
-      textCountOfClicks = document.getElementById('countOfClicks')
-
-      function clickedBt() {
-          countClicks += 1
-          textCountOfClicks.innerText = countClicks.toString()
-      }
-
-      function resetCountClicks() {
-          countClicks = 0
-          textCountOfClicks.innerText = countClicks.toString()
-      }
-  </script>
 </div>
+<script>
+    const yearSpan = document.getElementById('year')
+    yearSpan.innerText = new Date().getFullYear().toString()
+
+    let countClicks = 0
+    textCountOfClicks = document.getElementById('countOfClicks')
+
+    function clickedBt() {
+        countClicks += 1
+        textCountOfClicks.innerText = countClicks.toString()
+    }
+
+    function resetCountClicks() {
+        countClicks = 0
+        textCountOfClicks.innerText = countClicks.toString()
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
+<script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+</script>
 </body>
 
 </html>
