@@ -1,7 +1,7 @@
 app_config:
   redis:
     db:
-      db4: 1
+      db: 1
       db_tokens4: 2
       db_users4: 3
       db_short_url4: 4
