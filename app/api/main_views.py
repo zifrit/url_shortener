@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import UTC, datetime
 
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
@@ -17,7 +17,7 @@ def read_root(
     request: Request,
 ) -> HTMLResponse:
     context = {
-        "today": datetime.now(tz="UTC"),
+        "today": datetime.now(tz=UTC),
         "features": [
             "User Authentication with OTP",
             "Dynamic Content Rendering",
