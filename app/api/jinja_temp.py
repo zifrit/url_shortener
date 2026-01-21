@@ -1,5 +1,20 @@
+from datetime import UTC, datetime
+
+from fastapi import Request
 from fastapi.templating import Jinja2Templates
 
 from core.config import BASE_DIR
 
-templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
+
+def inject_current_date_and_time(
+    request: Request,
+) -> dict[str, datetime]:
+    return {
+        "today": datetime.now(tz=UTC),
+    }
+
+
+templates = Jinja2Templates(
+    directory=str(BASE_DIR / "templates"),
+    context_processors=[inject_current_date_and_time],
+)
