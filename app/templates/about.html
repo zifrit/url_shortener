@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  About \- URL Shortener
+{% endblock %}
+
+{% block main %}
+<main class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h1 class="card-title h3 mb-3">About URL Shortener</h1>
+          <p class="card-text">
+            Простой сервис для сокращения длинных ссылок и удобного их использования.
+          </p>
+          <a class="btn btn-primary" href="/docs">Swagger docs</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          О проекте
+        </div>
+        <div class="card-body">
+          <p class="card-text mb-2">
+            Этот сервис позволяет сократить длинный URL до короткой удобной ссылки,
+            хранит информацию о переходах и предоставляет HTTP API для интеграции с другими приложениями.
+          </p>
+          <p class="card-text mb-0">
+            В проекте используются FastAPI, шаблоны Jinja2, работа с базой данных и токенами доступа для
+            защищённых операций.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+
+{% block footer %}
+<footer class="text-center mt-4 mb-3 text-muted">
+  &copy; {{ today.year }} My URL Shortener \- Home Page
+</footer>
+{% endblock %}

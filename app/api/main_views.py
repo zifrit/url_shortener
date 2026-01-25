@@ -10,6 +10,7 @@ router = APIRouter()
 
 @router.get(
     "/",
+    name="home",
     response_class=HTMLResponse,
     include_in_schema=False,
 )
@@ -17,7 +18,6 @@ def read_root(
     request: Request,
 ) -> HTMLResponse:
     context = {
-        "today": datetime.now(tz=UTC),
         "features": [
             "User Authentication with OTP",
             "Dynamic Content Rendering",
@@ -29,5 +29,22 @@ def read_root(
     return templates.TemplateResponse(
         request=request,
         name="home.html",
+        context=context,
+    )
+
+
+@router.get(
+    "/about",
+    name="about",
+    response_class=HTMLResponse,
+    include_in_schema=False,
+)
+def read_about(
+    request: Request,
+) -> HTMLResponse:
+    context = {}
+    return templates.TemplateResponse(
+        request=request,
+        name="about.html",
         context=context,
     )
