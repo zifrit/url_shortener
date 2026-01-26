@@ -10,7 +10,6 @@ router = APIRouter()
     "/",
     name="home",
     response_class=HTMLResponse,
-    include_in_schema=False,
 )
 def read_root(
     request: Request,
@@ -35,7 +34,6 @@ def read_root(
     "/about",
     name="about",
     response_class=HTMLResponse,
-    include_in_schema=False,
 )
 def read_about(
     request: Request,

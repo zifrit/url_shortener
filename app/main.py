@@ -4,7 +4,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from api import router as api_router
-from api.main_views import router as main_router
+from web import router as web_router
 from core.config import settings
 from lifespan import lifespan
 
@@ -15,7 +15,7 @@ logging.basicConfig(
 )
 app = FastAPI(lifespan=lifespan)
 app.include_router(api_router)
-app.include_router(main_router)
+app.include_router(web_router)
 
 if __name__ == "__main__":
     uvicorn.run(
