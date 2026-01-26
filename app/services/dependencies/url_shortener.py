@@ -3,7 +3,7 @@ import logging
 from fastapi import HTTPException
 from starlette import status
 
-from api.v1.url_shortener.crud import storage
+from storage.short_ulr.crud import storage
 from schemas import ShortUrl
 
 log = logging.getLogger(__name__)

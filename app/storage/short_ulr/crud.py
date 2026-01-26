@@ -1,4 +1,4 @@
-__all__ = ["AlreadyExistsShortUrlError", "storage"]
+__all__ = ["storage", "ShortUrlStorage"]
 
 import logging
 from typing import cast
@@ -13,6 +13,7 @@ from schemas import (
     ShortUrlParticularUpdate,
     ShortUrlUpdate,
 )
+from storage.short_ulr.exceptions import AlreadyExistsShortUrlError
 
 log = logging.getLogger(__name__)
 
@@ -23,18 +24,6 @@ redis_storage = Redis(
     db=config.settings.redis.db.db_short_url,
     decode_responses=True,
 )
-
-
-class BaseShortUrlError(Exception):
-    """
-    Base exception for short url error
-    """
-
-
-class AlreadyExistsShortUrlError(BaseShortUrlError):
-    """
-    Short url already exists error
-    """
 
 
 class ShortUrlStorage(BaseModel):
