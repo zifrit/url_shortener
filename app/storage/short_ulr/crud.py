@@ -1,4 +1,4 @@
-__all__ = ["storage", "ShortUrlStorage"]
+__all__ = ["ShortUrlStorage", "storage"]
 
 import logging
 from typing import cast

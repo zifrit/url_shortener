@@ -3,9 +3,9 @@ from typing import Annotated
 from fastapi import APIRouter, Depends
 from starlette import status
 
-from storage.short_ulr.crud import storage
 from schemas import ShortUrl, ShortUrlParticularUpdate, ShortUrlRead, ShortUrlUpdate
 from services.dependencies.url_shortener import prefetch_slug_url
+from storage.short_ulr.crud import storage
 
 router = APIRouter(
     prefix="/{slug}",

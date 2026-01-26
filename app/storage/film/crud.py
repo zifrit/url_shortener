@@ -1,4 +1,4 @@
-__all__ = ["film_storage", "FilmStorage"]
+__all__ = ["FilmStorage", "film_storage"]
 
 import logging
 from typing import cast
