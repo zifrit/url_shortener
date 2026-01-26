@@ -1,5 +1,3 @@
-from datetime import UTC, datetime
-
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 
@@ -17,7 +15,7 @@ router = APIRouter()
 def read_root(
     request: Request,
 ) -> HTMLResponse:
-    context = {
+    context: dict[str, list[str]] = {
         "features": [
             "User Authentication with OTP",
             "Dynamic Content Rendering",
@@ -42,9 +40,8 @@ def read_root(
 def read_about(
     request: Request,
 ) -> HTMLResponse:
-    context = {}
     return templates.TemplateResponse(
         request=request,
         name="about.html",
-        context=context,
+        context={},
     )

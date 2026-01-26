@@ -7,7 +7,7 @@ from core.config import BASE_DIR
 
 
 def inject_current_date_and_time(
-    request: Request,
+    request: Request,  # noqa: ARG001
 ) -> dict[str, datetime]:
     return {
         "today": datetime.now(tz=UTC),
