@@ -1,4 +1,4 @@
-__all__ = ["AlreadyExistFilmError", "film_storage"]
+__all__ = ["film_storage", "FilmStorage"]
 
 import logging
 from typing import cast
@@ -8,6 +8,7 @@ from redis import Redis
 
 from core import config
 from schemas import Films, FilmsCreate, FilmsParticularUpdate, FilmsUpdate
+from storage.film.exception import AlreadyExistFilmError
 
 log = logging.getLogger(__name__)
 
@@ -18,18 +19,6 @@ redis_storage = Redis(
     db=config.settings.redis.db.db_films,
     decode_responses=True,
 )
-
-
-class FilmError(Exception):
-    """
-    Film related error
-    """
-
-
-class AlreadyExistFilmError(FilmError):
-    """
-    Film already exists error
-    """
 
 
 class FilmStorage(BaseModel):

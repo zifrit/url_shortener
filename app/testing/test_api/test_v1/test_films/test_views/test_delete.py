@@ -3,7 +3,7 @@ from _pytest.fixtures import SubRequest
 from fastapi import status
 from fastapi.testclient import TestClient
 
-from api.v1.films.crud import film_storage
+from storage.film.crud import film_storage
 from main import app
 from schemas import Films
 from testing.test_api.conftest import create_films
