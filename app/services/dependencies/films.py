@@ -1,18 +1,17 @@
 import logging
 from typing import Annotated
 
-from fastapi import HTTPException, Depends
+from fastapi import HTTPException, Depends, Request
 from starlette import status
 
-from core import config
 from storage.film.crud import FilmStorage
 from schemas import Films
 
 log = logging.getLogger(__name__)
 
 
-def get_film_storage() -> FilmStorage:
-    return FilmStorage(hash_name=config.settings.redis.token.film)
+def get_film_storage(request: Request) -> FilmStorage:
+    return request.app.state.film_storage
 
 
 GetFilmStorage = Annotated[FilmStorage, Depends(get_film_storage)]

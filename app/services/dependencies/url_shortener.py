@@ -1,18 +1,17 @@
 import logging
 from typing import Annotated
 
-from fastapi import HTTPException, Depends
+from fastapi import HTTPException, Depends, Request
 from starlette import status
 
-from core import config
 from storage.short_ulr.crud import ShortUrlStorage
 from schemas import ShortUrl
 
 log = logging.getLogger(__name__)
 
 
-def get_short_url_storage() -> ShortUrlStorage:
-    return ShortUrlStorage(hash_name=config.settings.redis.token.short_url)
+def get_short_url_storage(request: Request) -> ShortUrlStorage:
+    return request.app.state.short_url_storage
 
 
 GetShortUrlStorage = Annotated[ShortUrlStorage, Depends(get_short_url_storage)]
