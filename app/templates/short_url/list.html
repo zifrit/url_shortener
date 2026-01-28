@@ -9,4 +9,18 @@
   <h2>
     List of Short URLs
   </h2>
+  {% if list_of_short_urls %}
+  	{% for short_url in list_of_short_urls %}
+  		<div class="container my-2 p-2 bg-info bg-opacity-10 border border-info border-start-0 rounded-end">
+      <p class="">
+        {{ short_url.slug }}
+      </p>
+        <a class="btn btn-warning " href="{{ short_url.target_url }}">Link</a>
+      </div>
+  	{% endfor %}
+  {% else %}
+  	<h2>
+    Doesn't have short URLs yet.
+    </h2>
+  {% endif %}
 {% endblock %}
