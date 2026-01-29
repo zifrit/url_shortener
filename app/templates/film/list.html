@@ -10,20 +10,27 @@
     List of Films
   </h2>
   {% if list_of_films %}
-    {% for film in list_of_films %}
-      <div class="container my-2 p-2 bg-info bg-opacity-10 border border-info border-start-0 rounded-end">
-        <p class="m-0">
-          {{ film.slug }}
-        </p>
-        <p class="m-0">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle">
+        <thead>
+        <tr>
+          <th scope="col">Slug</th>
+          <th scope="col">Name</th>
+          <th scope="col">Author</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for film in list_of_films %}
+          <tr>
+            <td><code>{{ film.slug }}</code></td>
+            <td> {{ film.name }}</td>
+            <td>@{{ film.author }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
 
-          {{ film.name }}
-        </p>
-        <p class="m-0">
-          {{ film.author }}
-        </p>
-      </div>
-    {% endfor %}
   {% else %}
     <h2>
       Doesn't have films yet.

@@ -10,17 +10,37 @@
     List of Short URLs
   </h2>
   {% if list_of_short_urls %}
-  	{% for short_url in list_of_short_urls %}
-  		<div class="container my-2 p-2 bg-info bg-opacity-10 border border-info border-start-0 rounded-end">
-      <p class="">
-        {{ short_url.slug }}
-      </p>
-        <a class="btn btn-warning " href="{{ short_url.target_url }}">Link</a>
-      </div>
-  	{% endfor %}
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle">
+        <thead>
+        <tr>
+          <th scope="col">Slug</th>
+          <th scope="col">Target url</th>
+          <th scope="col">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for short_url in list_of_short_urls %}
+          <tr>
+            <td><code>{{ short_url.slug }}</code></td>
+            <td>
+              <a target="_blank" href="{{ short_url.target_url }}">{{ short_url.target_url }}</a>
+            </td>
+            <td>
+              {% if short_url.description %}
+                {{ short_url.description }}
+              {% else %}
+                <code>-</code>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
   {% else %}
-  	<h2>
-    Doesn't have short URLs yet.
+    <h2>
+      Doesn't have short URLs yet.
     </h2>
   {% endif %}
 {% endblock %}
