@@ -1,0 +1,21 @@
+{% macro post_from (from_action, back_url, create_schema, request) %}
+  <form action="{{ request.url_for(from_action) }}" method="post">
+    {% for field, schema in create_schema.properties.items() %}
+      {% set is_required = field in (create_schema.get('required') or []) %}
+      <div class="mb-3">
+        <label for="{{ field }}" class="form-label">{{ schema.title }}</label>
+        <input
+          type="text"
+          class="form-control"
+          id="{{ field }}"
+          name="{{ field }}"
+          {% if is_required %} required {% endif %}
+          {% if schema.get('maxLength') %}maxlength="{{ schema.get('maxLength') }}"{% endif %}
+          {% if schema.get('minLength') %}minlength="{{ schema.get('minLength') }}"{% endif %}
+        >
+      </div>
+    {% endfor %}
+    <input type="submit" value="Create" class="btn btn-primary">
+    <a href="{{ request.url_for(back_url) }}" class="btn bg-warning">Back</a>
+  </form>
+{% endmacro %}
