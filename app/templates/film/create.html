@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+  Create Film
+{% endblock %}
+
+{% block main %}
+  <h1>
+    Create new Film
+  </h1>
+  <code>
+  </code>
+  <div class="row">
+    <div class="col col-12 col-md-6 col-lg-4">
+      <form action="{{ url_for('film:create') }}" method="post">
+        {% for field, schema in create_schema.properties.items() %}
+          {% set is_required = field in (create_schema.get('required') or []) %}
+          <div class="mb-3">
+            <label for="{{ field }}" class="form-label">{{ schema.title }}</label>
+            <input
+              type="text"
+              class="form-control"
+              id="{{ field }}"
+              name="{{ field }}"
+              {% if is_required %} required {% endif %}
+              {% if schema.get('maxLength') %}maxlength="{{ schema.get('maxLength') }}"{% endif %}
+              {% if schema.get('minLength') %}minlength="{{ schema.get('minLength') }}"{% endif %}
+            >
+          </div>
+        {% endfor %}
+
+
+        <input type="submit" value="Create" class="btn btn-primary">
+      </form>
+    </div>
+  </div>
+{% endblock %}

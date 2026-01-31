@@ -3,7 +3,9 @@ from fastapi.responses import HTMLResponse
 
 from api.jinja_temp import templates
 
-router = APIRouter()
+router = APIRouter(
+    include_in_schema=False,
+)
 
 
 @router.get(
