@@ -11,6 +11,7 @@
   </h2>
   {% if list_of_short_urls %}
     <div class="table-responsive">
+      <a href="{{ url_for('short_url:create-view')}}" class="btn bg-success-subtle">Create new</a>
       <table class="table table-striped table-hover align-middle">
         <thead>
         <tr>
