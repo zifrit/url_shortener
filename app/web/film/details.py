@@ -1,16 +1,25 @@
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Form, Request
-from fastapi.responses import HTMLResponse
+from fastapi import APIRouter, Form, Request, status
+from fastapi.responses import HTMLResponse, RedirectResponse
 from api.jinja_temp import templates
 from schemas.films import FilmsCreate
+from services.dependencies.films import GetFilmStorage
 
 router = APIRouter(prefix="/create")
 
 
 @router.post("/", name="film:create")
-def create_film(data: Annotated[FilmsCreate, Form()]):
-    return data.model_dump(mode="json")
+def create_film(
+    data: Annotated[FilmsCreate, Form()],
+    storage: GetFilmStorage,
+    request: Request,
+) -> RedirectResponse:
+    storage.create_or_raise_if_exists(data)
+    return RedirectResponse(
+        url=request.url_for("film:list"),
+        status_code=status.HTTP_303_SEE_OTHER,
+    )
 
 
 @router.get("/", name="film:create-view")
