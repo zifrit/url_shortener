@@ -1,18 +1,40 @@
-{% macro post_from (from_action, back_url, create_schema, request) %}
+{% macro post_from (
+from_action,
+back_url,
+create_schema,
+request,
+validated,
+from_data,
+error
+   ) %}
   <form action="{{ request.url_for(from_action) }}" method="post">
     {% for field, schema in create_schema.properties.items() %}
       {% set is_required = field in (create_schema.get('required') or []) %}
-      <div class="mb-3">
+      <div class="mb-3 {% if validated %} has-validation {% endif %}">
         <label for="{{ field }}" class="form-label">{{ schema.title }}</label>
         <input
           type="text"
+          {% if validated %}
+          class="form-control {% if error and error[field] %} is-invalid {% else %} is-valid {% endif %}"
+          {% else %}
           class="form-control"
+          {% endif %}
           id="{{ field }}"
           name="{{ field }}"
           {% if is_required %} required {% endif %}
-          {% if schema.get('maxLength') %}maxlength="{{ schema.get('maxLength') }}"{% endif %}
-          {% if schema.get('minLength') %}minlength="{{ schema.get('minLength') }}"{% endif %}
+          {% if schema.get('maxLength') %} maxlength="{{ schema.get('maxLength') }}" {% endif %}
+          {% if schema.get('minLength') %} minlength="{{ schema.get('minLength') }}" {% endif %}
+          {% if from_data and from_data[field] %}
+            value="{{ from_data[field] }}"
+          {% elif schema.get('default') %}
+            value="{{ schema.get('default') }}"
+          {% endif %}
         >
+        {% if validated and (error and error[field]) %}
+          <div class="invalid-feedback">
+            {{ error[field] }}
+          </div>
+        {% endif %}
       </div>
     {% endfor %}
     <input type="submit" value="Create" class="btn btn-primary">
