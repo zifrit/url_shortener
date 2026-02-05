@@ -1,6 +1,7 @@
 from fastapi import APIRouter
-from web.film.list import router as film_router
+
 from web.film.details import router as details_router
+from web.film.list import router as film_router
 
 router = APIRouter(
     prefix="/film",

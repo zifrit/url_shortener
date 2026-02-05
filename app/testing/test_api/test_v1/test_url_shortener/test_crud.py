@@ -4,9 +4,9 @@ from unittest import TestCase
 import pytest
 from pydantic import HttpUrl
 
+from schemas import ShortUrl, ShortUrlCreate, ShortUrlParticularUpdate, ShortUrlUpdate
 from storage.short_ulr.crud import storage
 from storage.short_ulr.exceptions import AlreadyExistsShortUrlError
-from schemas import ShortUrl, ShortUrlCreate, ShortUrlParticularUpdate, ShortUrlUpdate
 from testing.test_api.conftest import create_short_url_random_slug
 
 

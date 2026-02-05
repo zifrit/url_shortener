@@ -1,6 +1,7 @@
-from typing import Annotated, Any, Mapping
+from collections.abc import Mapping
+from typing import Any
 
-from fastapi import APIRouter, Form, Request, status
+from fastapi import APIRouter, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import ValidationError
 
@@ -32,8 +33,8 @@ def create_view_validate_response(
     )
 
 
-def format_pydantic_errors(errors: list[dict[str, Any]]) -> dict[str, str]:
-    return {error["loc"][0]: error["msg"] for error in errors}
+def format_pydantic_errors(error: ValidationError) -> dict[str, str]:
+    return {f"{error["loc"][0]}": error["msg"] for error in error.errors()}
 
 
 @router.post("/", name="film:create", response_model=None)
@@ -45,7 +46,7 @@ async def create_film(
         try:
             data = FilmsCreate.model_validate(form)
         except ValidationError as error:
-            errors = format_pydantic_errors(error.errors())
+            errors = format_pydantic_errors(error)
             return create_view_validate_response(
                 errors=errors,
                 data=form,

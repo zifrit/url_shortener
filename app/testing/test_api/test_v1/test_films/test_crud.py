@@ -3,9 +3,9 @@ from unittest import TestCase
 
 import pytest
 
+from schemas import Films, FilmsCreate, FilmsParticularUpdate, FilmsUpdate
 from storage.film.crud import film_storage
 from storage.film.exception import AlreadyExistFilmError
-from schemas import Films, FilmsCreate, FilmsParticularUpdate, FilmsUpdate
 from testing.test_api.conftest import create_films_random_slug
 
 
