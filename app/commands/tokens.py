@@ -3,7 +3,7 @@ from typing import Annotated
 import typer
 from rich import print
 
-from api.v1.auth.services.by_token import cache_token_storage
+from services.auth.by_token import cache_token_storage
 
 app = typer.Typer(
     name="tokens",

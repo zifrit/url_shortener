@@ -9,8 +9,8 @@ from fastapi.security import (
     HTTPBearer,
 )
 
-from api.v1.auth.services.by_token import cache_token_storage
-from api.v1.auth.services.by_username_and_password import cache_user_storage
+from services.auth.by_token import cache_token_storage
+from services.auth.by_username_and_password import cache_user_storage
 from services.utils import UNSAFE_METHODS
 
 log = logging.getLogger(__name__)
@@ -66,7 +66,7 @@ def username_password_validate(cred: HTTPBasicCredentials | None) -> None:
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid username or password.",
-        # headers={"WWW-Authenticate": "Basic"},
+        headers={"WWW-Authenticate": "Basic"},
     )
 
 
