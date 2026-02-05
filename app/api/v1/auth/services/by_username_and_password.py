@@ -11,8 +11,17 @@ class ABCUsersStorage(ABC):
     @abstractmethod
     def get_user_password(self, username: str) -> str | None:
         """
-        Find password from redis DB or det None
+        Find password from redis DB or get None
         :param username: user username
+        :return: password or None
+        """
+
+    @abstractmethod
+    def add_user(self, username: str, password: str) -> str | None:
+        """
+        Add user to storage
+        :param username: user username
+        :param password: user password
         :return: password or None
         """
 
@@ -58,6 +67,12 @@ class RedisUserstorage(ABCUsersStorage):
             str | None,
             self.redis_client.get(username),
         )
+
+    def add_user(self, username: str, password: str) -> str | None:
+        if self.get_user_password(username) is not None:
+            return None
+        self.redis_client.set(username, password)
+        return password
 
 
 cache_user_storage = RedisUserstorage()
