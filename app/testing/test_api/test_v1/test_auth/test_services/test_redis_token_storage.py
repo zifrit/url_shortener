@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from api.v1.auth.services.by_token import cache_token_storage
+from services.auth.by_token import cache_token_storage
 
 
 class RedisTokenStorageTestCase(TestCase):

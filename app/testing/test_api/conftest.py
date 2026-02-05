@@ -5,7 +5,7 @@ from collections.abc import Generator
 import pytest
 from fastapi.testclient import TestClient
 
-from api.v1.auth.services.by_token import cache_token_storage
+from services.auth.by_token import cache_token_storage
 from storage.film.crud import film_storage
 from storage.short_ulr.crud import storage
 from main import app
