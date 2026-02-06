@@ -1,4 +1,3 @@
-from collections.abc import Mapping
 from typing import Any
 
 from fastapi import APIRouter, Request, status
@@ -7,34 +6,16 @@ from pydantic import ValidationError
 
 from api.jinja_temp import templates
 from schemas.short_url import ShortUrlCreate
+from services.dependencies.both import FormResponseHelper
 from services.dependencies.url_shortener import GetShortUrlStorage
 from storage.short_ulr.exceptions import AlreadyExistsShortUrlError
 
 router = APIRouter(prefix="/create")
 
-
-def create_view_validate_response(
-    errors: dict[str, str],
-    data: ShortUrlCreate | Mapping[str, Any],
-    request: Request,
-) -> HTMLResponse:
-    context: dict[str, Any] = {}
-    context.update(
-        create_schema=ShortUrlCreate.model_json_schema(),
-        error=errors,
-        validated=True,
-        from_data=data,
-    )
-    return templates.TemplateResponse(
-        request=request,
-        name="short_url/create.html",
-        context=context,
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-    )
-
-
-def format_pydantic_errors(error: ValidationError) -> dict[str, str]:
-    return {f"{error["loc"][0]}": error["msg"] for error in error.errors()}
+from_response = FormResponseHelper(
+    model=ShortUrlCreate,
+    template_name="short_url/create.html",
+)
 
 
 @router.post("/", name="short_url:create", response_model=None)
@@ -46,12 +27,13 @@ async def create_short_url(
         try:
             data = ShortUrlCreate.model_validate(form)
         except ValidationError as error:
-            errors = format_pydantic_errors(error)
-            return create_view_validate_response(
-                errors=errors,
-                data=form,
+            return from_response.render(
                 request=request,
+                pydentic_error=error,
+                form_data=form,
+                validated=True,
             )
+
     try:
         storage.create_or_raise_if_exists(data)
         return RedirectResponse(
@@ -60,10 +42,11 @@ async def create_short_url(
         )
     except AlreadyExistsShortUrlError:
         errors = {"slug": f"Short URL with this slug={data.slug!r} already exists"}
-        return create_view_validate_response(
+        return from_response.render(
             errors=errors,
-            data=data,
+            form_data=data,
             request=request,
+            validated=True,
         )
 
 

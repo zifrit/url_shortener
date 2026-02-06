@@ -7,34 +7,17 @@ from pydantic import ValidationError
 
 from api.jinja_temp import templates
 from schemas.films import FilmsCreate
+from services.dependencies.both import FormResponseHelper
 from services.dependencies.films import GetFilmStorage
 from storage.film.exception import AlreadyExistFilmError
 
 router = APIRouter(prefix="/create")
 
 
-def create_view_validate_response(
-    errors: dict[str, str],
-    data: FilmsCreate | Mapping[str, Any],
-    request: Request,
-) -> HTMLResponse:
-    context: dict[str, Any] = {}
-    context.update(
-        create_schema=FilmsCreate.model_json_schema(),
-        error=errors,
-        validated=True,
-        from_data=data,
-    )
-    return templates.TemplateResponse(
-        request=request,
-        name="film/create.html",
-        context=context,
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-    )
-
-
-def format_pydantic_errors(error: ValidationError) -> dict[str, str]:
-    return {f"{error["loc"][0]}": error["msg"] for error in error.errors()}
+from_response = FormResponseHelper(
+    model=FilmsCreate,
+    template_name="film/create.html",
+)
 
 
 @router.post("/", name="film:create", response_model=None)
@@ -46,11 +29,11 @@ async def create_film(
         try:
             data = FilmsCreate.model_validate(form)
         except ValidationError as error:
-            errors = format_pydantic_errors(error)
-            return create_view_validate_response(
-                errors=errors,
-                data=form,
+            return from_response.render(
                 request=request,
+                pydentic_error=error,
+                form_data=form,
+                validated=True,
             )
     try:
         storage.create_or_raise_if_exists(data)
@@ -60,10 +43,11 @@ async def create_film(
         )
     except AlreadyExistFilmError:
         errors = {"slug": f"Film with this slug={data.slug!r} already exists"}
-        return create_view_validate_response(
+        return from_response.render(
             errors=errors,
-            data=data,
+            form_data=data,
             request=request,
+            validated=True,
         )
 
 
