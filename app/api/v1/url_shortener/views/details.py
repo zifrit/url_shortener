@@ -1,10 +1,8 @@
-from typing import Annotated
-
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter
 from starlette import status
 
 from schemas import ShortUrl, ShortUrlParticularUpdate, ShortUrlRead, ShortUrlUpdate
-from services.dependencies.url_shortener import prefetch_slug_url
+from services.dependencies.url_shortener import ShortUrlBySlug
 from storage.short_ulr.crud import storage
 
 router = APIRouter(
@@ -23,11 +21,6 @@ router = APIRouter(
         },
     },
 )
-
-ShortUrlBySlug = Annotated[
-    ShortUrl,
-    Depends(prefetch_slug_url),
-]
 
 
 @router.get(

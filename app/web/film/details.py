@@ -8,7 +8,7 @@ from pydantic import ValidationError
 from api.jinja_temp import templates
 from schemas.films import FilmsCreate, FilmsUpdate, Films
 from services.dependencies.both import FormResponseHelper
-from services.dependencies.films import GetFilmStorage
+from services.dependencies.films import GetFilmStorage, FilmBySlug
 from storage.film.exception import AlreadyExistFilmError
 
 router = APIRouter(prefix="/create")
@@ -71,12 +71,9 @@ update_from_response = FormResponseHelper(
 @router.get("/{slug}", name="film:details")
 def get_film(
     request: Request,
-    slug: str,
-    storage: GetFilmStorage,
+    film: FilmBySlug,
 ) -> HTMLResponse:
-    from_data: Films | None = storage.get_by_slug(slug=slug)
-    if from_data:
-        from_data: dict[str, Any] = from_data.model_dump()
+    from_data: dict[str, Any] = film.model_dump()
     return update_from_response.render(
         form_data=from_data,
         request=request,

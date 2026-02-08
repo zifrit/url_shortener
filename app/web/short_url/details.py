@@ -7,7 +7,7 @@ from pydantic import ValidationError, BaseModel
 from api.jinja_temp import templates
 from schemas.short_url import ShortUrlCreate, ShortUrlUpdate, ShortUrl
 from services.dependencies.both import FormResponseHelper
-from services.dependencies.url_shortener import GetShortUrlStorage
+from services.dependencies.url_shortener import GetShortUrlStorage, ShortUrlBySlug
 from storage.short_ulr.exceptions import AlreadyExistsShortUrlError
 
 router = APIRouter(prefix="/create")
@@ -70,12 +70,9 @@ update_from_response = FormResponseHelper(
 @router.get("/{slug}", name="short_url:details")
 def get_short_url(
     request: Request,
-    slug: str,
-    storage: GetShortUrlStorage,
+    short_url: ShortUrlBySlug,
 ) -> HTMLResponse:
-    from_data: ShortUrl | None = storage.get_by_slug(slug=slug)
-    if from_data:
-        from_data: dict[str, Any] = from_data.model_dump()
+    from_data: dict[str, Any] = short_url.model_dump()
     return update_from_response.render(
         form_data=from_data,
         request=request,

@@ -31,3 +31,9 @@ def prefetch_slug_url(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f'"{slug}" Not found.',
     )
+
+
+ShortUrlBySlug = Annotated[
+    ShortUrl,
+    Depends(prefetch_slug_url),
+]

@@ -28,3 +28,9 @@ def prefetch_film(
         status_code=status.HTTP_404_NOT_FOUND,
         detail=f"Film with {slug} not found.",
     )
+
+
+FilmBySlug = Annotated[
+    Films,
+    Depends(prefetch_film),
+]
