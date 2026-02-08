@@ -5,7 +5,8 @@ create_schema,
 request,
 validated,
 from_data,
-error
+error,
+btn_text
    ) %}
   <form action="{{ request.url_for(from_action) }}" method="post">
     {% for field, schema in create_schema.properties.items() %}
@@ -37,7 +38,7 @@ error
         {% endif %}
       </div>
     {% endfor %}
-    <input type="submit" value="Create" class="btn btn-primary">
+    <input type="submit" value="{{ btn_text }}" class="btn btn-primary">
     <a href="{{ request.url_for(back_url) }}" class="btn bg-warning">Back</a>
   </form>
 {% endmacro %}
