@@ -1,0 +1,30 @@
+{% from 'macro/schema_post_form.html' import post_from %}
+{% extends 'base.html' %}
+
+{% block title %}
+  Update Short URL
+{% endblock %}
+
+{% block main %}
+  <h1>
+    Update Short URL
+  </h1>
+  <code>
+  </code>
+  <div class="row">
+    <div class="col col-12 col-md-6 col-lg-4">
+      {% set from_action = 'short_url:create' %}
+      {% set back_url = 'short_url:list' %}
+            {{ post_from(
+            from_action=from_action,
+            back_url=back_url,
+            create_schema=create_schema,
+            request=request,
+            error=error,
+            validated=validated,
+            from_data=from_data,
+            btn_text='Update'
+            )}}
+    </div>
+  </div>
+{% endblock %}

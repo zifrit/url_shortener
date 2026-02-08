@@ -6,7 +6,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import ValidationError
 
 from api.jinja_temp import templates
-from schemas.films import FilmsCreate
+from schemas.films import FilmsCreate, FilmsUpdate, Films
 from services.dependencies.both import FormResponseHelper
 from services.dependencies.films import GetFilmStorage
 from storage.film.exception import AlreadyExistFilmError
@@ -14,7 +14,7 @@ from storage.film.exception import AlreadyExistFilmError
 router = APIRouter(prefix="/create")
 
 
-from_response = FormResponseHelper(
+create_from_response = FormResponseHelper(
     model=FilmsCreate,
     template_name="film/create.html",
 )
@@ -29,7 +29,7 @@ async def create_film(
         try:
             data = FilmsCreate.model_validate(form)
         except ValidationError as error:
-            return from_response.render(
+            return create_from_response.render(
                 request=request,
                 pydentic_error=error,
                 form_data=form,
@@ -43,7 +43,7 @@ async def create_film(
         )
     except AlreadyExistFilmError:
         errors = {"slug": f"Film with this slug={data.slug!r} already exists"}
-        return from_response.render(
+        return create_from_response.render(
             errors=errors,
             form_data=data,
             request=request,
@@ -59,4 +59,25 @@ def get_film_form(request: Request) -> HTMLResponse:
         request=request,
         name="film/create.html",
         context=context,
+    )
+
+
+update_from_response = FormResponseHelper(
+    model=FilmsUpdate,
+    template_name="film/update.html",
+)
+
+
+@router.get("/{slug}", name="film:details")
+def get_film(
+    request: Request,
+    slug: str,
+    storage: GetFilmStorage,
+) -> HTMLResponse:
+    from_data: Films | None = storage.get_by_slug(slug=slug)
+    if from_data:
+        from_data: dict[str, Any] = from_data.model_dump()
+    return update_from_response.render(
+        form_data=from_data,
+        request=request,
     )

@@ -1,0 +1,30 @@
+{% from 'macro/schema_post_form.html' import post_from %}
+{% extends 'base.html' %}
+
+{% block title %}
+  Update Film
+{% endblock %}
+
+{% block main %}
+  <h1>
+    Update Film
+  </h1>
+  <code>
+  </code>
+  <div class="row">
+    <div class="col col-12 col-md-6 col-lg-4">
+      {% set from_action = 'film:create' %}
+      {% set back_url = 'film:list' %}
+            {{ post_from(
+            from_action=from_action,
+            back_url=back_url,
+            create_schema=create_schema,
+            request=request,
+            error=error,
+            validated=validated,
+            from_data=from_data,
+            btn_text='Update'
+            )}}
+    </div>
+  </div>
+{% endblock %}
