@@ -33,13 +33,23 @@ def get_film(
     )
 
 
-@router.post("/{slug}", name="film:update")
-def update_film(
+@router.post("/{slug}", name="film:update", response_model=None)
+async def update_film(
     request: Request,
-    film_in: Annotated[FilmsUpdate, Form()],
     film: FilmBySlug,
     storage: GetFilmStorage,
-) -> RedirectResponse:
+) -> RedirectResponse | HTMLResponse:
+    async with request.form() as form:
+        try:
+            film_in = FilmsUpdate.model_validate(form)
+        except ValidationError as error:
+            return update_from_response.render(
+                request=request,
+                pydentic_error=error,
+                form_data=form,
+                validated=True,
+                film=film,
+            )
     storage.update(
         film=film,
         film_in=film_in,

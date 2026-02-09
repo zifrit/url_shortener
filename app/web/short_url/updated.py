@@ -1,6 +1,7 @@
 from typing import Any, Annotated
 
 from fastapi import APIRouter, Form, status
+from pydantic import ValidationError
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
 
@@ -29,13 +30,23 @@ def get_short_url(
     )
 
 
-@router.post("/{slug}", name="short_url:update")
-def update_short_url(
+@router.post("/{slug}", name="short_url:update", response_model=None)
+async def update_short_url(
     request: Request,
-    short_url_in: Annotated[ShortUrlUpdate, Form()],
     short_url: ShortUrlBySlug,
     storage: GetShortUrlStorage,
-) -> RedirectResponse:
+) -> RedirectResponse | HTMLResponse:
+    async with request.form() as form:
+        try:
+            short_url_in = ShortUrlUpdate.model_validate(form)
+        except ValidationError as error:
+            return update_from_response.render(
+                request=request,
+                pydentic_error=error,
+                form_data=form,
+                validated=True,
+                short_url=short_url,
+            )
     storage.update(
         short_url=short_url,
         short_url_in=short_url_in,
