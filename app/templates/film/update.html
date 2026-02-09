@@ -13,7 +13,7 @@
   </code>
   <div class="row">
     <div class="col col-12 col-md-6 col-lg-4">
-      {% set from_action = 'film:create' %}
+      {% set from_action = url_for('film:update', slug=film.slug) %}
       {% set back_url = 'film:list' %}
             {{ post_from(
             from_action=from_action,

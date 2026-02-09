@@ -6,9 +6,9 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import ValidationError
 
 from api.jinja_temp import templates
-from schemas.films import FilmsCreate, FilmsUpdate, Films
+from schemas.films import FilmsCreate
 from services.dependencies.both import FormResponseHelper
-from services.dependencies.films import GetFilmStorage, FilmBySlug
+from services.dependencies.films import GetFilmStorage
 from storage.film.exception import AlreadyExistFilmError
 
 router = APIRouter(prefix="/create")
@@ -59,22 +59,4 @@ def get_film_form(request: Request) -> HTMLResponse:
         request=request,
         name="film/create.html",
         context=context,
-    )
-
-
-update_from_response = FormResponseHelper(
-    model=FilmsUpdate,
-    template_name="film/update.html",
-)
-
-
-@router.get("/{slug}", name="film:details")
-def get_film(
-    request: Request,
-    film: FilmBySlug,
-) -> HTMLResponse:
-    from_data: dict[str, Any] = FilmsUpdate(**film.model_dump()).model_dump()
-    return update_from_response.render(
-        form_data=from_data,
-        request=request,
     )

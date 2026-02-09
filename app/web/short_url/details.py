@@ -1,21 +1,20 @@
 from typing import Any
 
-from fastapi import APIRouter, Request, status
+from fastapi import Request, status, APIRouter
 from fastapi.responses import HTMLResponse, RedirectResponse
-from pydantic import ValidationError, BaseModel
+from pydantic import ValidationError
 
 from api.jinja_temp import templates
-from schemas.short_url import ShortUrlCreate, ShortUrlUpdate, ShortUrl
+from schemas.short_url import ShortUrlCreate
 from services.dependencies.both import FormResponseHelper
-from services.dependencies.url_shortener import GetShortUrlStorage, ShortUrlBySlug
+from services.dependencies.url_shortener import GetShortUrlStorage
 from storage.short_ulr.exceptions import AlreadyExistsShortUrlError
-
-router = APIRouter(prefix="/create")
 
 create_from_response = FormResponseHelper(
     model=ShortUrlCreate,
     template_name="short_url/create.html",
 )
+router = APIRouter(prefix="/create")
 
 
 @router.post("/", name="short_url:create", response_model=None)
@@ -58,22 +57,4 @@ def get_short_url_form(request: Request) -> HTMLResponse:
         request=request,
         name="short_url/create.html",
         context=context,
-    )
-
-
-update_from_response = FormResponseHelper(
-    model=ShortUrlUpdate,
-    template_name="short_url/update.html",
-)
-
-
-@router.get("/{slug}", name="short_url:details")
-def get_short_url(
-    request: Request,
-    short_url: ShortUrlBySlug,
-) -> HTMLResponse:
-    from_data: dict[str, Any] = ShortUrlUpdate(**short_url.model_dump()).model_dump()
-    return update_from_response.render(
-        form_data=from_data,
-        request=request,
     )

@@ -29,7 +29,7 @@ class ShortUrlUpdate(ShortUrlBase):
     ShortUrlUpdate model for update short url
     """
 
-    description: DescriptionString
+    description: DescriptionString = ""
 
 
 class ShortUrlParticularUpdate(BaseModel):

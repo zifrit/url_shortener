@@ -32,6 +32,7 @@ class FormResponseHelper:
         errors: dict[str, str] | None = None,
         pydentic_error: ValidationError | None = None,
         validated: bool = False,
+        **extra_context: Any,
     ) -> HTMLResponse:
         context: dict[str, Any] = {}
 
@@ -44,6 +45,7 @@ class FormResponseHelper:
             validated=validated,
             from_data=form_data,
         )
+        context.update(extra_context)
         return templates.TemplateResponse(
             request=request,
             name=self.template_name,
