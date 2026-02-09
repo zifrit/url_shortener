@@ -73,7 +73,7 @@ def get_film(
     request: Request,
     film: FilmBySlug,
 ) -> HTMLResponse:
-    from_data: dict[str, Any] = film.model_dump()
+    from_data: dict[str, Any] = FilmsUpdate(**film.model_dump()).model_dump()
     return update_from_response.render(
         form_data=from_data,
         request=request,

@@ -72,7 +72,7 @@ def get_short_url(
     request: Request,
     short_url: ShortUrlBySlug,
 ) -> HTMLResponse:
-    from_data: dict[str, Any] = short_url.model_dump()
+    from_data: dict[str, Any] = ShortUrlUpdate(**short_url.model_dump()).model_dump()
     return update_from_response.render(
         form_data=from_data,
         request=request,
