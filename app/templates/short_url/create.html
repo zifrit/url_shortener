@@ -13,7 +13,7 @@
   </code>
   <div class="row">
     <div class="col col-12 col-md-6 col-lg-4">
-      {% set from_action = 'short_url:create' %}
+      {% set from_action = url_for('short_url:create') %}
       {% set back_url = 'short_url:list' %}
             {{ post_from(
             from_action=from_action,

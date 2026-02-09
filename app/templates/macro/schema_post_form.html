@@ -8,7 +8,7 @@ from_data,
 error,
 btn_text
    ) %}
-  <form action="{{ request.url_for(from_action) }}" method="post">
+  <form action="{{ from_action }}" method="post">
     {% for field, schema in create_schema.properties.items() %}
       {% set is_required = field in (create_schema.get('required') or []) %}
       <div class="mb-3 {% if validated %} has-validation {% endif %}">
