@@ -1,6 +1,39 @@
-{% macro upt_del (upt_url, slug, request) %}
+{#{% macro upt_del (upt_url, del_url, slug, request) %}#}
+{#  <div class="btn-group" role="group">#}
+{#  <a href="{{ request.url_for(upt_url, slug=slug) }}" class="btn btn-outline-info">Edit</a>#}
+{#  <a href="{{ request.url_for(del_url, slug=slug) }}" class="btn btn-outline-danger">Delete</a>#}
+{#</div>#}
+{#{% endmacro %}#}
+
+
+{% macro upt_del (upt_url,del_url, slug, request) %}
   <div class="btn-group" role="group">
-  <a href="{{ request.url_for(upt_url, slug=slug) }}" class="btn btn-outline-info">Edit</a>
-  <a href="#" class="btn btn-outline-danger">Delete</a>
-</div>
+    <a href="{{ request.url_for(upt_url, slug=slug) }}" class="btn btn-outline-info">Edit</a>
+    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+            data-bs-target="#modal-confirm-dekete-{{ slug }}">
+      Delete
+    </button>
+  </div>
+  <!-- Модальное окно -->
+  <div class="modal fade" id="modal-confirm-dekete-{{ slug }}" tabindex="-1"
+       aria-labelledby="modal-confirm-dekete-{{ slug }}-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modal-confirm-dekete-{{ slug }}-label">Confirm delete object
+            <code>{{ slug }}</code></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure that you want to delete <code>{{ slug }}</code> object
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <form action="{{ request.url_for(del_url, slug=slug) }}" method="post">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endmacro %}
