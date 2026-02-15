@@ -1,6 +1,6 @@
 from typing import Any
 
-from fastapi import Request, status, APIRouter
+from fastapi import APIRouter, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import ValidationError
 

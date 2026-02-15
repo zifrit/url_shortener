@@ -1,13 +1,15 @@
-from typing import Any, Annotated
-from fastapi import APIRouter, Form, status
+from typing import Any
+
+from fastapi import APIRouter, status
 from starlette.requests import Request
-from services.dependencies.url_shortener import ShortUrlBySlug, GetShortUrlStorage
 from starlette.responses import RedirectResponse
 
-router = APIRouter(prefix="/delete")
+from services.dependencies.url_shortener import GetShortUrlStorage, ShortUrlBySlug
+
+router = APIRouter(prefix="/delete/{slug}")
 
 
-@router.post("/{slug}", name="short_url:delete")
+@router.post("/", name="short_url:delete")
 def delete_short_url(
     request: Request,
     short_url: ShortUrlBySlug,

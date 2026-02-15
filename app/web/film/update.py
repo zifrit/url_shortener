@@ -1,17 +1,14 @@
-from collections.abc import Mapping
-from typing import Any, Annotated
+from typing import Any
 
-from fastapi import APIRouter, Request, status, Form
+from fastapi import APIRouter, Request, status
 from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import ValidationError
 
-from api.jinja_temp import templates
-from schemas.films import FilmsCreate, FilmsUpdate, Films
+from schemas.films import FilmsUpdate
 from services.dependencies.both import FormResponseHelper
-from services.dependencies.films import GetFilmStorage, FilmBySlug
-from storage.film.exception import AlreadyExistFilmError
+from services.dependencies.films import FilmBySlug, GetFilmStorage
 
-router = APIRouter(prefix="/update")
+router = APIRouter(prefix="/update/{slug}")
 
 
 update_from_response = FormResponseHelper(
@@ -20,7 +17,7 @@ update_from_response = FormResponseHelper(
 )
 
 
-@router.get("/{slug}", name="film:details")
+@router.get("/", name="film:details")
 def get_film(
     request: Request,
     film: FilmBySlug,
@@ -33,7 +30,7 @@ def get_film(
     )
 
 
-@router.post("/{slug}", name="film:update", response_model=None)
+@router.post("/", name="film:update", response_model=None)
 async def update_film(
     request: Request,
     film: FilmBySlug,

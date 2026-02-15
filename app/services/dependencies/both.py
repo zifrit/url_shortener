@@ -1,4 +1,5 @@
-from typing import Mapping, Any
+from collections.abc import Mapping
+from typing import Any
 
 from pydantic import BaseModel, ValidationError
 from starlette import status
@@ -28,11 +29,11 @@ class FormResponseHelper:
         self,
         request: Request,
         *,
-        form_data: type[BaseModel] | Mapping[str, Any] | None = None,
+        form_data: BaseModel | Mapping[str, Any] | dict[str, Any] | None = None,
         errors: dict[str, str] | None = None,
         pydentic_error: ValidationError | None = None,
         validated: bool = False,
-        **extra_context: Any,
+        **extra_context: Any,  # noqa: ANN401
     ) -> HTMLResponse:
         context: dict[str, Any] = {}
 

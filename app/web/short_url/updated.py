@@ -1,15 +1,15 @@
-from typing import Any, Annotated
+from typing import Any
 
-from fastapi import APIRouter, Form, status
+from fastapi import APIRouter, status
 from pydantic import ValidationError
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
 
 from schemas import ShortUrlUpdate
 from services.dependencies.both import FormResponseHelper
-from services.dependencies.url_shortener import ShortUrlBySlug, GetShortUrlStorage
+from services.dependencies.url_shortener import GetShortUrlStorage, ShortUrlBySlug
 
-router = APIRouter(prefix="/update")
+router = APIRouter(prefix="/update/{slug}")
 
 update_from_response = FormResponseHelper(
     model=ShortUrlUpdate,
@@ -17,7 +17,7 @@ update_from_response = FormResponseHelper(
 )
 
 
-@router.get("/{slug}", name="short_url:details")
+@router.get("/", name="short_url:details")
 def get_short_url(
     request: Request,
     short_url: ShortUrlBySlug,
@@ -30,7 +30,7 @@ def get_short_url(
     )
 
 
-@router.post("/{slug}", name="short_url:update", response_model=None)
+@router.post("/", name="short_url:update", response_model=None)
 async def update_short_url(
     request: Request,
     short_url: ShortUrlBySlug,

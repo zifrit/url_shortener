@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from starlette import status
 
 from schemas import Films, FilmsParticularUpdate, FilmsRead, FilmsUpdate
-from services.dependencies.films import prefetch_film, FilmBySlug
+from services.dependencies.films import FilmBySlug, prefetch_film
 from storage.film.crud import film_storage
 
 router = APIRouter(
