@@ -2,10 +2,10 @@ app_config:
   redis:
     db:
       db: 1
-      db_tokens4: 2
-      db_users4: 3
-      db_short_url4: 4
-      db_films4: 5
+      db_tokens: 2
+      db_users: 3
+      db_short_url: 4
+      db_films: 5
 
     connection:
       host: 'localhost'
